@@ -1,0 +1,8 @@
+streamlit>=1.36
+opencv-python-headless>=4.9
+numpy>=1.26
+
+# --- optional (detector track / local OCR); install only if you use them ---
+# git+https://github.com/Benjinoob14/streamlit-bpmn-annotation.git  # in-page box correction
+# pytesseract                                                        # local OCR (needs tesseract binary)
+# torch, torchvision, huggingface_hub                                # pulled by scripts/run_elca.sh into the ELCA venv
