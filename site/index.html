@@ -3,271 +3,201 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Doing Process — mapping how the law actually works</title>
-<meta name="description" content="Doing Process turns hand-drawn maps of legal processes — many drawn by people inside prisons — into a public, machine-readable encyclopedia of how the law actually works.">
-<style>
-  :root{
-    --paper:#e7e2d6; --paper-2:#f1eee6; --paper-3:#dcd6c6;
-    --ink:#1b1813; --ink-2:#514c41; --ink-3:#7c7566;
-    --teal:#0d6b60; --teal-2:#0a4f47; --ochre:#b0741a; --ochre-2:#7d5210;
-    --line:#cec8b8; --line-2:#bdb5a1;
-    --maxw:1140px;
-    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
-    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    --mono:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Code","Roboto Mono",Menlo,Consolas,monospace;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
-    font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-  a{color:var(--teal-2);text-underline-offset:3px;text-decoration-thickness:1px}
-  a:hover{color:var(--ink)}
-  h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.08;letter-spacing:-.01em;margin:0}
-  p{margin:0 0 1em}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--teal-2);margin:0 0 .9rem;font-weight:700}
-  .eyebrow .n{color:var(--ochre-2)}
-  .lede{font-size:1.28rem;line-height:1.5;color:var(--ink-2);font-family:var(--serif)}
-  :focus-visible{outline:2.5px solid var(--ochre);outline-offset:3px;border-radius:2px}
-
-  /* nav */
-  header.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 86%,transparent);
-    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
-  .brand{font-family:var(--mono);font-weight:700;letter-spacing:.02em;font-size:.95rem;color:var(--ink);
-    text-decoration:none;display:flex;align-items:center;gap:.55rem}
-  .brand .dot{width:11px;height:11px;border:2px solid var(--teal);border-radius:50%;display:inline-block}
-  .brand b{color:var(--ochre-2)}
-  .nav nav{display:flex;gap:1.5rem;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em}
-  .nav nav a{color:var(--ink-2);text-decoration:none;text-transform:uppercase}
-  .nav nav a:hover{color:var(--ink)}
-  @media(max-width:720px){.nav nav{display:none}}
-
-  /* hero */
-  .hero{padding:74px 0 26px}
-  .hero h1{font-size:clamp(2.5rem,6.6vw,4.5rem);margin:0 0 .5em;max-width:16ch}
-  .hero h1 em{font-style:normal;color:var(--teal-2)}
-  .hero .lede{max-width:56ch;margin-bottom:1.7em}
-  .actions{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center}
-  .btn{font-family:var(--mono);font-size:.8rem;letter-spacing:.03em;text-transform:uppercase;
-    padding:.72rem 1.15rem;border-radius:7px;text-decoration:none;border:1.5px solid var(--ink);
-    color:var(--ink);background:transparent;transition:transform .12s ease,background .12s ease}
-  .btn:hover{transform:translateY(-1px)}
-  .btn.primary{background:var(--teal);border-color:var(--teal);color:#f6f4ec}
-  .btn.primary:hover{background:var(--teal-2);color:#fff}
-
-  /* signature scene */
-  .scene{margin:44px 0 8px;border:1px solid var(--line);border-radius:14px;background:
-    linear-gradient(0deg,var(--paper-2),var(--paper-2));
-    padding:18px 20px 10px;overflow:hidden;position:relative}
-  .scene .stage{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.66rem;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding:0 2px 8px}
-  .scene svg{display:block;width:100%;height:auto}
-  .draw{stroke-dasharray:520;stroke-dashoffset:520;animation:draw 1.5s ease forwards}
-  .clean .draw{animation-delay:.55s}
-  .clean{opacity:0;animation:appear .8s ease .5s forwards}
-  @keyframes draw{to{stroke-dashoffset:0}}
-  @keyframes appear{to{opacity:1}}
-  .seam{opacity:0;animation:appear .6s ease 1.3s forwards}
-
-  /* generic section */
-  section{padding:66px 0;border-top:1px solid var(--line)}
-  section.dark{background:var(--ink);color:var(--paper);border-top:none}
-  section.dark .eyebrow{color:#7bbcae}
-  section.dark .eyebrow .n{color:var(--ochre)}
-  section.dark h2,section.dark h3{color:var(--paper)}
-  section.dark a{color:#9fd3c8}
-  .head{max-width:60ch;margin-bottom:2.2rem}
-  .head h2{font-size:clamp(1.8rem,3.6vw,2.6rem);margin-bottom:.35em}
-  .head p{color:var(--ink-2);font-size:1.12rem;margin:0}
-  section.dark .head p{color:#c9c2b2}
-
-  /* idea grid */
-  .grid{display:grid;gap:20px}
-  .g2{grid-template-columns:1.1fr .9fr}
-  .cards4{grid-template-columns:repeat(4,1fr)}
-  .cards3{grid-template-columns:repeat(3,1fr)}
-  @media(max-width:860px){.g2,.cards4,.cards3{grid-template-columns:1fr}}
-  .card{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:22px 22px 20px}
-  section.dark .card{background:#241f18;border-color:#3a3227}
-  .card h3{font-size:1.18rem;margin-bottom:.4em}
-  .card p{margin:0;color:var(--ink-2);font-size:.98rem}
-  section.dark .card p{color:#c4bdad}
-  .card .tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--ochre-2);display:block;margin-bottom:.7rem}
-  section.dark .card .tag{color:var(--ochre)}
-
-  ul.ticks{list-style:none;margin:0;padding:0}
-  ul.ticks li{position:relative;padding:.35rem 0 .35rem 1.5rem;color:var(--ink-2)}
-  ul.ticks li::before{content:"\00a7";position:absolute;left:0;top:.35rem;font-family:var(--mono);
-    color:var(--teal-2);font-weight:700}
-  ul.ticks b{color:var(--ink)}
-
-  /* pipeline */
-  .pipe{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:6px}
-  @media(max-width:960px){.pipe{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:480px){.pipe{grid-template-columns:1fr}}
-  .step{background:var(--paper-2);border:1px solid var(--line);border-radius:11px;padding:18px 16px;
-    position:relative}
-  .step .num{font-family:var(--mono);font-weight:700;color:var(--ochre-2);font-size:.82rem}
-  .step h3{font-size:1.08rem;margin:.5rem 0 .35rem}
-  .step p{margin:0;font-size:.9rem;color:var(--ink-2)}
-  .step .who{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--teal-2);margin-top:.7rem}
-
-  /* handbook */
-  .hb{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-  @media(max-width:860px){.hb{grid-template-columns:1fr}}
-  .glyphs{display:flex;flex-wrap:wrap;gap:18px;margin-top:8px;font-family:var(--mono);font-size:.72rem;
-    color:var(--ink-2)}
-  .glyphs span{display:flex;align-items:center;gap:.5rem}
-  .glyphs svg{flex:none}
-  .downloads{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}
-  .dl{display:flex;align-items:center;gap:.7rem;background:var(--paper-2);border:1px solid var(--line);
-    border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--ink);min-width:260px}
-  .dl:hover{border-color:var(--teal)}
-  .dl .k{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ochre-2)}
-  .dl .t{font-family:var(--serif);font-size:1.05rem}
-  .dl .arw{margin-left:auto;color:var(--teal-2)}
-
-  /* principles */
-  .prin{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  @media(max-width:860px){.prin{grid-template-columns:1fr}}
-  .prin .p{border-left:2px solid var(--ochre);padding-left:16px}
-  section.dark .prin .p{border-color:var(--ochre)}
-  .prin h3{font-size:1.05rem;margin-bottom:.35em}
-  .prin p{font-size:.94rem;color:#c4bdad;margin:0}
-  .stack{font-family:var(--mono);font-size:.78rem;color:#c9c2b2;margin-top:22px;line-height:2}
-  .stack a{white-space:nowrap}
-
-  footer{padding:40px 0 56px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.76rem;
-    color:var(--ink-3)}
-  footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:baseline}
-  footer a{color:var(--ink-2);text-decoration:none}
-  .disc{max-width:52ch}
-
-  .js .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
-  .js .reveal.in{opacity:1;transform:none}
-  @media(prefers-reduced-motion:reduce){
-    *{animation:none!important;scroll-behavior:auto}
-    .clean,.seam{opacity:1}.draw{stroke-dashoffset:0}
-    .reveal{opacity:1!important;transform:none!important}
-  }
-</style>
+<title>Doing Process — the road from release to a business, drawn step by step</title>
+<meta name="description" content="Doing Process turns hand-drawn maps of legal processes — many drawn by people inside prisons — into a public, machine-readable encyclopedia of how the law actually works. First worked example: starting a business after release.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%230d6b60' stroke-width='4'/%3E%3C/svg%3E">
 </head>
-<body>
+<body id="top">
+
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="#top"><span class="dot"></span>doing<b>process</b>.org</a>
-    <nav>
-      <a href="#idea">Idea</a>
-      <a href="#path">The path</a>
-      <a href="#value">Value</a>
-      <a href="#handbook">Handbook</a>
-      <a href="#open">Open</a>
+    <a class="brand" href="index.html"><span class="dot"></span>doing<b>process</b>.org</a>
+    <nav aria-label="Site">
+      <a href="start-a-business.html">The road</a>
+      <a href="survey.html">Survey</a>
+      <a href="#fit" class="hide-m">How it fits</a>
+      <a href="#handbook" class="hide-m">Handbook</a>
+      <a href="https://github.com/alibama/doingprocess">GitHub</a>
     </nav>
   </div>
 </header>
 
-<a id="top"></a>
-<div class="hero">
-  <div class="wrap">
-    <p class="eyebrow">A public encyclopedia of legal process</p>
-    <h1>Doing process is <em>due process</em>.</h1>
-    <p class="lede">People navigating the legal system up close — often from inside a prison — understand
-      how its processes actually work. Doing Process turns their hand-drawn maps into a public,
-      machine-readable record of the law in action.</p>
-    <div class="actions">
-      <a class="btn primary" href="#path">See the path</a>
-      <a class="btn" href="#handbook">Read the handbook</a>
-    </div>
+<main>
+<div class="wrap hero">
+  <p class="eyebrow">A public encyclopedia of legal process · first worked example</p>
+  <h1>The road from release to a <em>business of your own</em>, drawn step by step.</h1>
+  <p class="lede">People who have been through the system know how its processes really work. Doing Process turns their hand-drawn maps into
+    a public, machine-readable record of the law in action. Our first full example: everything it takes to start a business after
+    prison — ID, bank account, licenses, taxes, money — and which steps can begin before the gate opens.</p>
+  <div class="actions">
+    <a class="btn primary" href="start-a-business.html">See the road</a>
+    <a class="btn" href="survey.html">The readiness survey</a>
+  </div>
 
-    <div class="scene reveal">
-      <div class="stage"><span>Drawn by hand</span><span>Recognized &amp; checked</span><span>Published — free, forever</span></div>
-      <svg viewBox="0 0 944 210" role="img" aria-label="A hand-drawn process map resolving into a clean BPMN diagram.">
-        <defs>
-          <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="7" result="n"/>
-            <feDisplacementMap in="SourceGraphic" in2="n" scale="3.4"/></filter>
-        </defs>
-        <!-- HAND-DRAWN (ochre, rough) -->
-        <g class="sketch" filter="url(#rough)" fill="none" stroke="#b0741a" stroke-width="2.4"
-           stroke-linecap="round" stroke-linejoin="round" font-family="var(--mono)">
-          <circle class="draw" cx="40" cy="92" r="14" fill="#f1eee6"/>
-          <line class="draw" x1="54" y1="92" x2="86" y2="92"/>
-          <rect class="draw" x="88" y="70" width="92" height="44" rx="6" fill="#f1eee6"/>
-          <line class="draw" x1="180" y1="92" x2="206" y2="92"/>
-          <polygon class="draw" points="230,68 254,92 230,116 206,92" fill="#f1eee6"/>
-          <line class="draw" x1="254" y1="92" x2="282" y2="92"/>
-          <rect class="draw" x="284" y="70" width="86" height="44" rx="6" fill="#f1eee6"/>
-          <line class="draw" x1="370" y1="92" x2="392" y2="92"/>
-          <circle class="draw" cx="408" cy="92" r="14" fill="#f1eee6"/>
-          <line class="draw" x1="230" y1="116" x2="230" y2="150"/>
-          <circle class="draw" cx="230" cy="166" r="14" fill="#f1eee6"/>
-          <text x="134" y="96" fill="#7d5210" stroke="none" font-size="13" text-anchor="middle" font-family="ui-monospace,monospace">file</text>
-          <text x="327" y="96" fill="#7d5210" stroke="none" font-size="13" text-anchor="middle" font-family="ui-monospace,monospace">grant</text>
+  <div class="scene reveal" aria-hidden="true">
+    <div class="stage"><span>Drawn by hand, inside</span><span>Recognized &amp; checked</span><span>Published — free, forever</span></div>
+    <svg viewBox="0 0 1040 236" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="7" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="3.4"/></filter>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1L10 5 0 9z" fill="#1b1813"/></marker>
+        <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1L10 5 0 9z" fill="#b0741a"/></marker>
+      </defs>
+      <!-- sketch -->
+      <g class="sketch" filter="url(#rough)" fill="none" stroke="#b0741a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" font-family="ui-monospace,Menlo,Consolas,monospace">
+        <circle class="draw" cx="34" cy="118" r="15"/>
+        <path class="draw" d="M50 118h40" marker-end="url(#ah2)"/>
+        <rect class="draw" x="92" y="90" width="112" height="56" rx="6" transform="rotate(-1.2 148 118)"/>
+        <path class="draw" d="M205 118h40" marker-end="url(#ah2)"/>
+        <rect class="draw" x="247" y="90" width="112" height="56" rx="6" transform="rotate(.9 303 118)"/>
+        <path class="draw" d="M360 118h38" marker-end="url(#ah2)"/>
+        <path class="draw" d="M432 86l34 32-34 32-34-32z"/>
+        <path class="draw" d="M432 152v38h-64" marker-end="url(#ah2)"/>
+        <path class="draw" d="M467 118h30" marker-end="url(#ah2)"/>
+        <text x="148" y="113" text-anchor="middle" font-size="13" fill="#7d5210" stroke="none">get ID</text>
+        <text x="148" y="131" text-anchor="middle" font-size="10" fill="#7d5210" stroke="none">DMV · § 46.2-345</text>
+        <text x="303" y="113" text-anchor="middle" font-size="13" fill="#7d5210" stroke="none">open acct</text>
+        <text x="303" y="131" text-anchor="middle" font-size="10" fill="#7d5210" stroke="none">2nd chance</text>
+        <text x="432" y="78" text-anchor="middle" font-size="12" fill="#7d5210" stroke="none">license?</text>
+        <text x="455" y="110" font-size="10" fill="#7d5210" stroke="none">y</text>
+        <text x="408" y="178" text-anchor="end" font-size="10" fill="#7d5210" stroke="none">no → set up shop</text>
+      </g>
+      <!-- seam -->
+      <g class="seam" font-family="ui-monospace,Menlo,Consolas,monospace">
+        <line x1="518" y1="24" x2="518" y2="212" stroke="#bdb5a1" stroke-dasharray="4 6"/>
+        <text x="518" y="16" text-anchor="middle" font-size="9.5" letter-spacing="2.5" fill="#7c7566">RECOGNIZE</text>
+        <text x="518" y="230" text-anchor="middle" font-size="9.5" letter-spacing="2.5" fill="#7c7566">CHECK · SIGN OFF</text>
+      </g>
+      <!-- clean -->
+      <g class="clean" transform="translate(538,0)" fill="none" stroke="#0d6b60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" font-family="ui-sans-serif,system-ui,Segoe UI,Helvetica,Arial,sans-serif">
+        <circle class="draw" cx="32" cy="118" r="15" fill="#fbfaf6"/>
+        <path class="draw" d="M48 118h38" stroke="#1b1813" stroke-width="1.6" marker-end="url(#ah)"/>
+        <rect class="draw" x="88" y="90" width="118" height="56" rx="8" fill="#fbfaf6"/>
+        <path class="draw" d="M207 118h38" stroke="#1b1813" stroke-width="1.6" marker-end="url(#ah)"/>
+        <rect class="draw" x="247" y="90" width="118" height="56" rx="8" fill="#fbfaf6"/>
+        <path class="draw" d="M366 118h36" stroke="#1b1813" stroke-width="1.6" marker-end="url(#ah)"/>
+        <path class="draw" d="M428 92l26 26-26 26-26-26z" stroke="#b0741a" fill="#fbfaf6"/>
+        <path d="M421 111l14 14M435 111l-14 14" stroke="#7d5210" stroke-width="1.8"/>
+        <path class="draw" d="M455 118h26" stroke="#1b1813" stroke-width="1.6" marker-end="url(#ah)"/>
+        <path class="draw" d="M428 145v45h-60" stroke="#1b1813" stroke-width="1.6" marker-end="url(#ah)"/>
+        <g stroke="none" fill="#1b1813" font-size="12.5" font-weight="600">
+          <text x="147" y="122" text-anchor="middle">Get your ID</text>
+          <text x="306" y="122" text-anchor="middle">Open a bank account</text>
         </g>
-        <!-- SEAM -->
-        <g class="seam" font-family="ui-monospace,monospace">
-          <line x1="466" y1="30" x2="466" y2="182" stroke="#bdb5a1" stroke-width="1.2" stroke-dasharray="4 5"/>
-          <text x="466" y="20" fill="#0a4f47" font-size="11" text-anchor="middle" letter-spacing="2">RECOGNIZE</text>
+        <g stroke="none" fill="#0a4f47" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="9.5">
+          <text x="147" y="162" text-anchor="middle">Va. Code § 46.2-345</text>
+          <text x="306" y="162" text-anchor="middle">Survey D1, D2</text>
         </g>
-        <!-- CLEAN (teal, crisp) -->
-        <g class="clean" transform="translate(508,0)" fill="none" stroke="#0d6b60" stroke-width="2"
-           stroke-linecap="round" stroke-linejoin="round">
-          <circle class="draw" cx="40" cy="92" r="13" fill="#fff"/>
-          <line class="draw" x1="53" y1="92" x2="88" y2="92"/>
-          <rect class="draw" x="88" y="70" width="92" height="44" rx="7" fill="#fff"/>
-          <line class="draw" x1="180" y1="92" x2="206" y2="92"/>
-          <polygon class="draw" points="230,68 254,92 230,116 206,92" fill="#fff"/>
-          <line class="draw" x1="254" y1="92" x2="282" y2="92"/>
-          <rect class="draw" x="284" y="70" width="86" height="44" rx="7" fill="#fff"/>
-          <line class="draw" x1="370" y1="92" x2="393" y2="92"/>
-          <circle class="draw" cx="409" cy="92" r="13" fill="#fff" stroke-width="3.2"/>
-          <line class="draw" x1="230" y1="116" x2="230" y2="150"/>
-          <circle class="draw" cx="230" cy="166" r="13" fill="#fff" stroke-width="3.2"/>
-          <text x="134" y="95" fill="#0a4f47" stroke="none" font-size="10.5" text-anchor="middle" font-family="ui-monospace,monospace">File grievance</text>
-          <text x="327" y="95" fill="#0a4f47" stroke="none" font-size="10.5" text-anchor="middle" font-family="ui-monospace,monospace">Grant relief</text>
-          <text x="230" y="150" fill="#7c7566" stroke="none" font-size="10.5" text-anchor="middle" font-family="ui-monospace,monospace">§</text>
+        <g stroke="none" fill="#514c41" font-size="11" font-weight="600">
+          <text x="428" y="80" text-anchor="middle">License needed?</text>
         </g>
-      </svg>
-    </div>
+        <g stroke="none" fill="#7d5210" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="10" font-weight="700">
+          <text x="462" y="110">yes</text>
+          <text x="418" y="185" text-anchor="end">no</text>
+        </g>
+        <rect x="131" y="81" width="90" height="15" rx="7.5" fill="#0d6b60" stroke="none"/>
+        <text x="176" y="92" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-size="8" font-weight="700" fill="#f6f4ec" letter-spacing="1" stroke="none">CAN START INSIDE</text>
+      </g>
+    </svg>
   </div>
 </div>
 
+<!-- 01 why -->
 <section id="idea">
-  <div class="wrap">
-    <div class="grid g2">
-      <div>
-        <p class="eyebrow"><span class="n">01</span> &nbsp;The idea</p>
-        <h2 style="font-size:clamp(1.8rem,3.6vw,2.6rem);margin-bottom:.5em">Lived procedure is expertise. We give it a form and a home.</h2>
-        <p style="color:var(--ink-2);font-size:1.12rem">A legal process is just a sequence: who does what, in what
-          order, under which law. Grievances, appeals, parole, sealing a record — the people who run these gauntlets
-          learn them cold, and that knowledge mostly goes unrecorded and uncredited.</p>
-        <p style="color:var(--ink-2);font-size:1.12rem;margin:0">Doing Process captures it as a <b>process map</b> in
-          BPMN — boxes, arrows, and decision diamonds. Drawn on paper, it can be scanned, read by software into a
-          machine-readable model, checked against the law it cites, and published for anyone to read.</p>
-      </div>
-      <div class="card" style="align-self:start">
-        <span class="tag">Why maps, not prose</span>
-        <ul class="ticks">
-          <li><b>They compose.</b> Maps merge and cross-reference — a step in one becomes a link in another.</li>
-          <li><b>They&rsquo;re checkable.</b> Every step must cite its law, so gaps and errors surface.</li>
-          <li><b>They&rsquo;re executable.</b> The model that teaches a person can drive a workflow tool.</li>
-          <li><b>They credit the author.</b> Contributions track under a chosen handle, across every map.</li>
-        </ul>
-      </div>
+  <div class="wrap grid g2">
+    <div>
+      <p class="eyebrow"><span class="n">01</span> &nbsp;The idea</p>
+      <h2 style="font-size:clamp(1.8rem,3.6vw,2.6rem);margin-bottom:.5em">Lived procedure is expertise. We give it a form and a home.</h2>
+      <p class="prose">A legal process is just a sequence: who does what, in what order, under which law. Grievances, appeals, parole,
+        sealing a record — and now, the long run of filings between a release date and a first paying customer. The people who run
+        these gauntlets learn them cold, and that knowledge mostly goes unrecorded and uncredited.</p>
+      <p class="prose">Doing Process captures it as a process map in <b>BPMN</b> — boxes, arrows and decision diamonds, the same notation
+        courts and companies use. Drawn on paper, a map can be scanned, read by software into a machine-readable model, checked against
+        the law each step cites, and published for anyone to read or build on.</p>
+    </div>
+    <div class="card">
+      <h3>Why a business, of all things?</h3>
+      <ul class="ticks">
+        <li><b>It is often the most open door.</b> A background check can close a job without a word; a license board has to give reasons, and a customer only asks whether you can do the work.</li>
+        <li><b>It is a legal process end to end.</b> ID, banking, entity, license, tax, benefits — nine offices, each with its own rules and clocks. Exactly what a map is for.</li>
+        <li><b>Much of it can start inside.</b> Documents, training hours, a credit report, a business plan. The green tags on our maps mark those steps.</li>
+        <li><b>It is honest about the hard parts.</b> Debt, suspended licenses, supervision conditions and benefit cliffs are on the map, not in a footnote.</li>
+      </ul>
     </div>
   </div>
 </section>
 
+<!-- 02 the road -->
+<section id="road" class="tight">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow"><span class="n">02</span> &nbsp;The road</p>
+      <h2>Thirteen stops, nine offices, one person.</h2>
+      <p>The whole path from a release date to an open business, as one process. Every box with a plus sign is a smaller map of its own —
+        getting an ID alone runs through five offices. Answers to the <a href="survey.html">readiness survey</a> decide which stops a person actually needs.</p>
+    </div>
+    <figure class="diagram reveal">
+      <div class="scroller"><img src="assets/diagrams/overview.svg" width="2366" height="394" alt="BPMN overview: release within 12 months, readiness survey, supervision check, get your ID, choose how to own it, open a bank account, then licenses, taxes and start-up money in parallel, benefits counseling, open for business." loading="lazy"></div>
+      <figcaption><span class="t">Starting a business after release — the whole road</span>
+        <span class="links">Virginia · draft <a href="start-a-business.html">Read the map →</a></span></figcaption>
+    </figure>
+    <p class="scrollhint">Scroll sideways. It is a long road; that is the point.</p>
+    <div class="keyrow">
+      <span class="k"><span class="pill">CAN START INSIDE</span> before release</span>
+      <span class="k"><span class="swatch"></span> a step someone does</span>
+      <span class="k"><span class="diamond"></span> a question with one way out</span>
+      <span class="k"><span class="cite">Va. Code § …</span> the law behind the step</span>
+      <span class="k"><span class="need">citation needed</span> a gap a reviewer must fill</span>
+    </div>
+  </div>
+</section>
+
+<!-- 03 how the pieces fit -->
+<section id="fit" class="dark">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow"><span class="n">03</span> &nbsp;How the pieces fit</p>
+      <h2>A survey, a set of rules, and maps drawn by the people who walked them.</h2>
+      <p>Each piece is useful alone. Together they turn "here is how it works" into "here is your path", without asking anyone for their name.</p>
+    </div>
+    <div class="grid cards3">
+      <div class="card"><span class="tag">1 · Ask</span><h3>The readiness survey</h3><p>About 45 check-box questions, written at a 6th-grade level, anonymous by default. Every question carries a code (A1, C3 …) that maps to a step in the model. <a href="survey.html">Read it →</a></p></div>
+      <div class="card"><span class="tag">2 · Decide</span><h3>Decision tables, one state at a time</h3><p>Which trades need a license, which records a board may weigh, which bank account fits, which entity to form. DMN tables hold the rules so they can be edited and tested apart from the map.</p></div>
+      <div class="card"><span class="tag">3 · Route</span><h3>A pre-filled case</h3><p>Survey answers become process variables. The model opens the steps a person needs and skips the rest: no ID subprocess for someone holding a valid license, no employer accounts for someone working alone.</p></div>
+      <div class="card"><span class="tag">4 · Draw</span><h3>Maps from inside</h3><p>People who have done a step draw it: the DMV visit, the board hearing, the second-chance account. One process per page, a role and a rule on every step. Mailed in, scanned, recognized locally.</p></div>
+      <div class="card"><span class="tag">5 · Check</span><h3>Lint, review, sign off</h3><p>A linter demands a citation on every step and real deadlines on every clock. A person corrects, redacts and releases each map under CC0. Until then it says <em>draft</em>, and gaps say <em>citation needed</em>.</p></div>
+      <div class="card"><span class="tag">6 · Use</span><h3>Programs, mentors, lenders</h3><p>A reentry class teaches from the map. A mentor walks one path with one person. A CDFI or credit union plugs into the banking and microloan branches. Every map is free to reuse.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 who it's for -->
+<section id="value">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow"><span class="n">04</span> &nbsp;Who it is for</p>
+      <h2>One map, many readers</h2>
+      <p>Because a map is both human-readable and executable, the same artifact serves the person on the path, the staff beside them, and the institutions whose rules they are navigating.</p>
+    </div>
+    <div class="grid cards3">
+      <div class="card"><span class="tag">Participants</span><h3>A path you can see</h3><p>What comes first, who you will deal with, what it costs, how long it takes, and which parts you can finish before release.</p></div>
+      <div class="card"><span class="tag">Facility &amp; reentry staff</span><h3>What can start inside</h3><p>The staff survey records what a facility can support — ID help, tablets, mentors — so the model knows which steps can begin before the gate.</p></div>
+      <div class="card"><span class="tag">Programs &amp; mentors</span><h3>A curriculum with a spine</h3><p>Teach the road in order. The survey's learning section shapes delivery; the crosswalk shapes the syllabus.</p></div>
+      <div class="card"><span class="tag">Credit unions &amp; CDFIs</span><h3>A ready-made referral</h3><p>The banking and funding branches name where a second-chance account or a microloan fits, and what has to be true first.</p></div>
+      <div class="card"><span class="tag">Boards &amp; lawmakers</span><h3>Where the rules bite</h3><p>Seeing a record screen, a reinstatement fee or a benefit cliff on the map shows exactly which rule costs how many weeks.</p></div>
+      <div class="card"><span class="tag">Researchers</span><h3>A living corpus</h3><p>Material for process mining and conformance work — how procedures are written versus how they actually run, state by state.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 the path a map travels -->
 <section id="path">
   <div class="wrap">
     <div class="head">
-      <p class="eyebrow"><span class="n">02</span> &nbsp;The path</p>
+      <p class="eyebrow"><span class="n">05</span> &nbsp;The path a map travels</p>
       <h2>From a mailed drawing to the commons</h2>
-      <p>The route one map travels. It is itself a process — so here it is as one. Every stage runs on owned hardware;
-        a person signs off before the corpus is touched.</p>
+      <p>The route one map travels. It is itself a process — so here it is as one. Every stage runs on owned hardware; a person signs off before the corpus is touched.</p>
     </div>
     <div class="pipe reveal">
       <div class="step"><div class="num">01</div><h3>Draw</h3><p>One process per page: a step, the role that does it, and the rule it comes from.</p><div class="who">on paper</div></div>
@@ -280,54 +210,29 @@
   </div>
 </section>
 
-<section id="value">
-  <div class="wrap">
-    <div class="head">
-      <p class="eyebrow"><span class="n">03</span> &nbsp;Where it&rsquo;s of value</p>
-      <h2>One map, many readers</h2>
-      <p>Because a map is both human-readable and executable, the same artifact serves people, clinics, courts, and
-        researchers at once.</p>
-    </div>
-    <div class="grid cards3 reveal">
-      <div class="card"><span class="tag">People in the system</span><h3>A followable path</h3><p>Plain maps for grievances, appeals, record sealing and expungement, and records requests — for pro se litigants and people reentering.</p></div>
-      <div class="card"><span class="tag">Legal aid &amp; clinics</span><h3>A shared library</h3><p>A citable, reusable library of procedure a clinic can hand a client or build its intake around.</p></div>
-      <div class="card"><span class="tag">Researchers</span><h3>A living corpus</h3><p>Material for process mining and conformance work — how procedures are written versus how they actually run.</p></div>
-      <div class="card"><span class="tag">Courts &amp; civic tech</span><h3>Process made legible</h3><p>The same map explains a procedure to a person and drives a workflow, closing the gap between the rulebook and the counter.</p></div>
-      <div class="card"><span class="tag">Contributors</span><h3>Credit that follows you</h3><p>Recognition for hard-won procedural knowledge and a durable, portable record of authorship.</p></div>
-      <div class="card"><span class="tag">The commons</span><h3>Public by default</h3><p>Every map is CC0 and free to read, cite, and build on — a shared account of how the law works in practice.</p></div>
-    </div>
-  </div>
-</section>
-
+<!-- 06 handbook -->
 <section id="handbook">
   <div class="wrap">
     <div class="head">
-      <p class="eyebrow"><span class="n">04</span> &nbsp;The handbook</p>
+      <p class="eyebrow"><span class="n">06</span> &nbsp;The handbook</p>
       <h2>How to take part</h2>
-      <p>Two roles, one workflow. Contributors draw; operators run the intake. Both are documented so the whole thing
-        stays legible and auditable.</p>
+      <p>Two roles, one workflow. Contributors draw; operators run the intake. Both are documented so the whole thing stays legible and auditable.</p>
     </div>
-    <div class="hb">
+    <div class="grid g2e">
       <div class="card">
         <span class="tag">For contributors</span>
-        <h3 style="margin-bottom:.5em">Draw a map we can read</h3>
+        <h3>Draw a map we can read</h3>
         <ul class="ticks">
-          <li>One process per page; name it and the system at the top.</li>
+          <li>One process per page; name it and the office at the top.</li>
           <li>Write each step as an action; name the <b>role</b>, never a person.</li>
-          <li>Put the <b>rule number</b> beside every step — a step without its law can&rsquo;t be used.</li>
+          <li>Put the rule number beside every step — a step without its law can't be used yet.</li>
           <li>Diamond for a decision, clock for a deadline, circle to start, doubled circle to end.</li>
-          <li>You&rsquo;re never published under your legal name — you pick a handle, and whether it shows at all.</li>
+          <li>You're never published under your legal name — you pick a handle, and whether it shows at all.</li>
         </ul>
-        <div class="glyphs" aria-hidden="true">
-          <span><svg width="26" height="26"><circle cx="13" cy="13" r="9" fill="none" stroke="#0d6b60" stroke-width="1.4"/></svg>start</span>
-          <span><svg width="26" height="26"><circle cx="13" cy="13" r="9" fill="none" stroke="#1b1813" stroke-width="3"/></svg>end</span>
-          <span><svg width="30" height="26"><rect x="4" y="6" width="22" height="15" rx="3" fill="none" stroke="#0d6b60" stroke-width="1.4"/></svg>step</span>
-          <span><svg width="30" height="26"><polygon points="15,4 26,13 15,22 4,13" fill="none" stroke="#b0741a" stroke-width="1.4"/></svg>decision</span>
-        </div>
       </div>
       <div class="card">
         <span class="tag">For operators</span>
-        <h3 style="margin-bottom:.5em">Run a short, auditable pipeline</h3>
+        <h3>Run a short, auditable pipeline</h3>
         <ul class="ticks">
           <li><b>Redaction first.</b> Legal identity lives only in the restricted originals archive.</li>
           <li><b>Recognize locally.</b> Detector or local vision model; OCR local or off — no cloud.</li>
@@ -337,67 +242,54 @@
         </ul>
       </div>
     </div>
-    <div class="downloads reveal">
-      <a class="dl" href="doingprocess-handbook.pdf">
-        <span><span class="k">PDF · Handbook</span><br><span class="t">Doing Process — the handbook</span></span>
-        <span class="arw">↓</span>
-      </a>
-      <a class="dl" href="doingprocess-contributor-packet.pdf">
-        <span><span class="k">PDF · Print &amp; mail</span><br><span class="t">Contributor packet</span></span>
-        <span class="arw">↓</span>
-      </a>
+    <div class="dls" style="margin-top:20px">
+      <a class="dl" href="doingprocess-handbook.pdf"><span><span class="k">PDF · Handbook</span>Doing Process — the handbook</span><span class="arrow">↓</span></a>
+      <a class="dl" href="doingprocess-contributor-packet.pdf"><span><span class="k">PDF · Print &amp; mail</span>Contributor packet</span><span class="arrow">↓</span></a>
     </div>
   </div>
 </section>
 
+<!-- 07 open -->
 <section id="open" class="dark">
   <div class="wrap">
     <div class="head">
-      <p class="eyebrow"><span class="n">05</span> &nbsp;Open &amp; local</p>
+      <p class="eyebrow"><span class="n">07</span> &nbsp;Open &amp; local</p>
       <h2>Owned end to end, on purpose</h2>
-      <p>The whole pipeline runs on your own hardware with local models — a deliberate choice, so that material from
-        people inside prisons never depends on a third party.</p>
+      <p>The whole pipeline runs on your own hardware with local models — a deliberate choice, so that material from people inside prisons never depends on a third party.</p>
     </div>
-    <div class="prin reveal">
-      <div class="p"><h3>Local-first</h3><p>Recognition, OCR, checking, and storage all run on owned hardware. No scan or draft touches a cloud service.</p></div>
-      <div class="p"><h3>Open licenses</h3><p>Code is Apache-2.0; every contributed map is CC0. Free to read, cite, run, and fork.</p></div>
-      <div class="p"><h3>Human sign-off</h3><p>Recognition is automatic; publication is not. A person reviews and releases every map.</p></div>
+    <div class="grid cards3">
+      <div class="card"><span class="tag">Local-first</span><p>Recognition, OCR, checking, and storage all run on owned hardware. No scan or draft touches a cloud service.</p></div>
+      <div class="card"><span class="tag">Open licenses</span><p>Code is Apache-2.0; every contributed map is CC0. The maps on this site are plain BPMN files you can open in any modeler.</p></div>
+      <div class="card"><span class="tag">Human sign-off</span><p>Recognition is automatic; publication is not. A person reviews and releases every map, and every citation.</p></div>
     </div>
-    <div class="stack">
-      Built on open standards and projects —
-      <a href="https://www.bpmn.org/">BPMN &amp; DMN</a> ·
-      <a href="https://www.spiffworkflow.org/">SpiffWorkflow</a> ·
-      <a href="https://bpmn.io/">bpmn-js</a> ·
-      <a href="https://github.com/dwslab/hdBPMN">hdBPMN</a> ·
-      <a href="https://lexipedia.xyz/">Lexipedia</a>
-    </div>
+    <p class="small" style="margin-top:1.6rem;color:#a9a192">Built on open standards and projects — <a href="https://www.bpmn.org/">BPMN &amp; DMN</a> · <a href="https://www.spiffworkflow.org/">SpiffWorkflow</a> · <a href="https://bpmn.io/">bpmn-js</a> · <a href="https://github.com/dwslab/hdBPMN">hdBPMN</a> · <a href="https://lexipedia.xyz/">Lexipedia</a></p>
   </div>
 </section>
 
-<section id="join">
-  <div class="wrap">
-    <div class="grid g2">
-      <div>
-        <p class="eyebrow"><span class="n">06</span> &nbsp;Get involved</p>
-        <h2 style="font-size:clamp(1.7rem,3.4vw,2.4rem);margin-bottom:.5em">If any of this is yours to help with, get in touch.</h2>
-        <p style="color:var(--ink-2);font-size:1.1rem;margin:0">Facilities and reentry programs that can carry the mail.
-          Clinics and legal-aid groups with procedures to map. Researchers who want the corpus. Volunteers who can
-          scan, review, and sign off. And contributors with a process worth writing down.</p>
-      </div>
-      <div class="card" style="align-self:center">
-        <span class="tag">Contact</span>
-        <p style="font-family:var(--serif);font-size:1.3rem;margin:.2em 0 .1em">hello@doingprocess.org</p>
-        <p style="margin:0;color:var(--ink-2);font-size:.95rem">Tell us which side of the workflow you&rsquo;re on and
-          we&rsquo;ll send the right packet.</p>
-      </div>
+<!-- 08 get involved -->
+<section id="involved">
+  <div class="wrap grid g2">
+    <div>
+      <p class="eyebrow"><span class="n">08</span> &nbsp;Get involved</p>
+      <h2 style="font-size:clamp(1.8rem,3.6vw,2.6rem);margin-bottom:.5em">If any of this is yours to help with, get in touch.</h2>
+      <p class="prose">Facilities and reentry programs that can field the survey or carry the mail. Credit unions and CDFIs for the banking
+        and microloan branches. Licensing boards willing to check a map of their own process. People who have started a business after
+        release and can tell us where the map is wrong. And anyone who can add the next state.</p>
+    </div>
+    <div class="card accent">
+      <span class="tag">Contact</span>
+      <h3><a href="mailto:hello@doingprocess.org">hello@doingprocess.org</a></h3>
+      <p>Tell us which side of the road you're on — participant, staff, lender, board, researcher — and we'll send the right packet.</p>
     </div>
   </div>
 </section>
+</main>
 
 <footer>
-  <div class="wrap">
-    <span>© <span id="yr"></span> doingprocess.org · Doing process is due process.</span>
-    <span class="disc">Not legal advice. Doing Process publishes maps of how legal processes work; it does not provide legal representation or advice.</span>
+  <div class="wrap row">
+    <div>© <span id="yr"></span> doingprocess.org · Doing process is due process.<br>
+      <span class="small">Not legal advice. Doing Process publishes maps of how legal processes work; it does not provide legal representation or advice. Maps marked <em>draft</em> have not yet been reviewed.</span></div>
+    <div class="mono">code Apache-2.0 · maps CC0 · <a href="https://github.com/alibama/doingprocess">source</a></div>
   </div>
 </footer>
 

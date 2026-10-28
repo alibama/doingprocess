@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_survey_to_path" targetNamespace="https://doingprocess.org/bpmn" exporter="doingprocess build_diagrams.py" exporterVersion="1">
+  <bpmn:collaboration id="Collab_survey_to_path">
+    <bpmn:participant id="Participant_survey_to_path" name="From survey answers to a personal path" processRef="Process_survey_to_path" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_survey_to_path" name="From survey answers to a personal path" isExecutable="false">
+    <bpmn:documentation>Each tagged survey answer becomes a process variable. A decision table reads them and opens, skips or shortens the steps that follow, so nobody is walked through a step that does not apply to them.</bpmn:documentation>
+    <bpmn:startEvent id="s" name="Survey handed in">
+      <bpmn:outgoing>Flow_0</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="fill" name="Enter the answers (paper), or the tablet writes them">
+      <bpmn:documentation>Authority: Crosswalk codes A1–H3; Can start before release: yes</bpmn:documentation>
+      <bpmn:incoming>Flow_0</bpmn:incoming>
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:scriptTask id="vars" name="Write the process variables">
+      <bpmn:documentation>Authority: months_to_release, business_type …</bpmn:documentation>
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:textAnnotation id="n_priv"><bpmn:text>No name or DOC number travels with the answers. The case holds variables, not the form.</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_n_priv" sourceRef="vars" targetRef="n_priv" />
+    <bpmn:businessRuleTask id="decide" name="Pick the path (decision table)">
+      <bpmn:documentation>Authority: Survey B1, B6</bpmn:documentation>
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:exclusiveGateway id="g" name="Which path?">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:subProcess id="full" name="Full start-up path">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="job" name="Job first, business later">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="learn" name="Learning track only">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:subProcess>
+    <bpmn:endEvent id="end" name="Personal path ready">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0" sourceRef="s" targetRef="fill" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="fill" targetRef="vars" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="vars" targetRef="decide" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="decide" targetRef="g" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="g" targetRef="full" name="start soon" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="g" targetRef="job" name="after a job" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="g" targetRef="learn" name="not now" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="full" targetRef="end" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="job" targetRef="end" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="learn" targetRef="end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_survey_to_path">
+    <bpmndi:BPMNPlane id="Plane_survey_to_path" bpmnElement="Collab_survey_to_path">
+      <bpmndi:BPMNShape id="Participant_survey_to_path_di" bpmnElement="Participant_survey_to_path" isHorizontal="true"><dc:Bounds x="26" y="38" width="1330" height="324" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="s_di" bpmnElement="s"><dc:Bounds x="102" y="77" width="38" height="38" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="fill_di" bpmnElement="fill"><dc:Bounds x="237" y="59" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="vars_di" bpmnElement="vars"><dc:Bounds x="427" y="59" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n_priv_di" bpmnElement="n_priv"><dc:Bounds x="406" y="172" width="190" height="56" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_n_priv_di" bpmnElement="Assoc_n_priv"><di:waypoint x="501" y="133" /><di:waypoint x="406" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="decide_di" bpmnElement="decide"><dc:Bounds x="617" y="59" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g_di" bpmnElement="g"><dc:Bounds x="857" y="72" width="48" height="48" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="full_di" bpmnElement="full" isExpanded="false"><dc:Bounds x="997" y="59" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="job_di" bpmnElement="job" isExpanded="false"><dc:Bounds x="997" y="163" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="learn_di" bpmnElement="learn" isExpanded="false"><dc:Bounds x="997" y="267" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_di" bpmnElement="end"><dc:Bounds x="1242" y="77" width="38" height="38" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0_di" bpmnElement="Flow_0"><di:waypoint x="140" y="96" /><di:waypoint x="237" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="385" y="96" /><di:waypoint x="427" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="575" y="96" /><di:waypoint x="617" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="765" y="96" /><di:waypoint x="857" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4"><di:waypoint x="905" y="96" /><di:waypoint x="997" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5"><di:waypoint x="881" y="120" /><di:waypoint x="881" y="200" /><di:waypoint x="997" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6"><di:waypoint x="881" y="120" /><di:waypoint x="881" y="304" /><di:waypoint x="997" y="304" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7"><di:waypoint x="1145" y="96" /><di:waypoint x="1242" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8"><di:waypoint x="1145" y="200" /><di:waypoint x="1166" y="200" /><di:waypoint x="1166" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9"><di:waypoint x="1145" y="304" /><di:waypoint x="1166" y="304" /><di:waypoint x="1166" y="96" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Could my record be a barrier to a state occupational license?  (Virginia, illustrative)
+
+  DRAFT. This table shows how the survey answers (E3 record_class, E4 record_categories,
+  B3 business_type) feed a decision. It is not a board determination and has not been
+  reviewed. Hit policy FIRST: rules are read top-down and the first match wins, so the
+  more specific rules sit above the general ones.
+
+  Authority for the whole table: Va. Code § 54.1-204 — a person may not be refused a
+  license solely because of a prior conviction unless the conviction directly relates to
+  the occupation; subsection (B) lists the factors a board must weigh.
+-->
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             id="Definitions_licensing_barrier" name="Licensing barrier (Virginia, draft)"
+             namespace="https://doingprocess.org/dmn">
+  <decision id="LicensingBarrier" name="Could my record be a barrier?">
+    <decisionTable id="DecisionTable_LicensingBarrier" hitPolicy="FIRST">
+      <input id="in_record_class" label="record_class (Survey E3)">
+        <inputExpression id="ie_record_class" typeRef="string"><text>record_class</text></inputExpression>
+      </input>
+      <input id="in_record_category" label="record_category (Survey E4)">
+        <inputExpression id="ie_record_category" typeRef="string"><text>record_category</text></inputExpression>
+      </input>
+      <input id="in_trade" label="trade group (Survey B3)">
+        <inputExpression id="ie_trade" typeRef="string"><text>trade_group</text></inputExpression>
+      </input>
+      <output id="out_barrier" label="barrier" name="barrier" typeRef="string" />
+      <output id="out_next" label="next step" name="next_step" typeRef="string" />
+      <output id="out_authority" label="authority" name="authority" typeRef="string" />
+
+      <rule id="r1">
+        <inputEntry id="r1a"><text>"none"</text></inputEntry>
+        <inputEntry id="r1b"><text>-</text></inputEntry>
+        <inputEntry id="r1c"><text>-</text></inputEntry>
+        <outputEntry id="r1x"><text>"none"</text></outputEntry>
+        <outputEntry id="r1y"><text>"Apply when the training and exam are done."</text></outputEntry>
+        <outputEntry id="r1z"><text>"Va. Code § 54.1-204(A)"</text></outputEntry>
+      </rule>
+      <rule id="r2">
+        <inputEntry id="r2a"><text>-</text></inputEntry>
+        <inputEntry id="r2b"><text>"child or vulnerable adult"</text></inputEntry>
+        <inputEntry id="r2c"><text>"care"</text></inputEntry>
+        <outputEntry id="r2x"><text>"likely"</text></outputEntry>
+        <outputEntry id="r2y"><text>"Child, elder and home care are governed by barrier-crime lists, not the general test. Talk through other trades with a mentor before investing in hours."</text></outputEntry>
+        <outputEntry id="r2z"><text>"Va. Code § 63.2-1719 et seq."</text></outputEntry>
+      </rule>
+      <rule id="r3">
+        <inputEntry id="r3a"><text>"felony"</text></inputEntry>
+        <inputEntry id="r3b"><text>"financial"</text></inputEntry>
+        <inputEntry id="r3c"><text>"handles client money"</text></inputEntry>
+        <outputEntry id="r3x"><text>"review"</text></outputEntry>
+        <outputEntry id="r3y"><text>"The record relates to the trade, so the board will weigh it. Ask for an early determination where offered; gather evidence of time passed and rehabilitation."</text></outputEntry>
+        <outputEntry id="r3z"><text>"Va. Code § 54.1-204(B)"</text></outputEntry>
+      </rule>
+      <rule id="r4">
+        <inputEntry id="r4a"><text>"misdemeanor"</text></inputEntry>
+        <inputEntry id="r4b"><text>-</text></inputEntry>
+        <inputEntry id="r4c"><text>-</text></inputEntry>
+        <outputEntry id="r4x"><text>"low"</text></outputEntry>
+        <outputEntry id="r4y"><text>"Apply. Answer record questions as asked; a conviction alone cannot be the reason for a refusal."</text></outputEntry>
+        <outputEntry id="r4z"><text>"Va. Code § 54.1-204(A)"</text></outputEntry>
+      </rule>
+      <rule id="r5">
+        <inputEntry id="r5a"><text>"felony"</text></inputEntry>
+        <inputEntry id="r5b"><text>-</text></inputEntry>
+        <inputEntry id="r5c"><text>-</text></inputEntry>
+        <outputEntry id="r5x"><text>"review"</text></outputEntry>
+        <outputEntry id="r5y"><text>"The board weighs nature and seriousness, relation to the trade, time elapsed, age at the time, and rehabilitation. Prepare that record before applying."</text></outputEntry>
+        <outputEntry id="r5z"><text>"Va. Code § 54.1-204(B)"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="Diagram_licensing_barrier">
+      <dmndi:DMNShape id="Shape_LicensingBarrier" dmnElementRef="LicensingBarrier">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

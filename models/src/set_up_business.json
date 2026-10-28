@@ -1,0 +1,266 @@
+{
+  "id": "set_up_business",
+  "name": "Setting up the business itself",
+  "summary": "Ownership form, tax number, bank account, the local business license, and the extra registrations that depend on what you sell and whether you hire. Four offices, one person. Virginia is the worked example.",
+  "col_width": 178,
+  "row_height": 104,
+  "lanes": [
+    {
+      "name": "Entrepreneur",
+      "rows": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "State Corp. Commission",
+      "rows": [
+        2
+      ]
+    },
+    {
+      "name": "IRS · Va. Tax · VEC",
+      "rows": [
+        3
+      ]
+    },
+    {
+      "name": "Your city or county",
+      "rows": [
+        4
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "s",
+      "type": "start",
+      "name": "Licensed, or no license needed",
+      "col": 0,
+      "row": 0
+    },
+    {
+      "id": "own",
+      "type": "rule",
+      "name": "Pick the ownership form",
+      "col": 1,
+      "row": 0,
+      "cite": "Survey B5 → DMN entity_choice"
+    },
+    {
+      "id": "g1",
+      "type": "xor",
+      "name": "Just you, under your own name?",
+      "col": 2,
+      "row": 0
+    },
+    {
+      "id": "dba",
+      "type": "user",
+      "name": "Trade under your name, or file an assumed name",
+      "col": 3,
+      "row": 1,
+      "cite": "Va. Code § 59.1-69"
+    },
+    {
+      "id": "llc",
+      "type": "service",
+      "name": "File Articles of Organization ($100)",
+      "col": 3,
+      "row": 2,
+      "cite": "Va. Code § 13.1-1011"
+    },
+    {
+      "id": "ein",
+      "type": "user",
+      "name": "Get a free EIN from the IRS (same day, online)",
+      "col": 4,
+      "row": 0,
+      "cite": "IRS Form SS-4"
+    },
+    {
+      "id": "bank",
+      "type": "subprocess",
+      "name": "Open the business account",
+      "col": 5,
+      "row": 0,
+      "cite": "Survey D1, D2"
+    },
+    {
+      "id": "bpol",
+      "type": "user",
+      "name": "Apply for the local business license (BPOL)",
+      "col": 6,
+      "row": 4,
+      "cite": "Va. Code § 58.1-3703"
+    },
+    {
+      "id": "zoning",
+      "type": "user",
+      "name": "Zoning sign-off or home-occupation permit",
+      "col": 7,
+      "row": 4,
+      "cite": "?"
+    },
+    {
+      "id": "g_sales",
+      "type": "xor",
+      "name": "Selling goods, or serving food?",
+      "col": 8,
+      "row": 0,
+      "cite": "Survey B3"
+    },
+    {
+      "id": "health",
+      "type": "user",
+      "name": "Health permit and kitchen inspection",
+      "col": 9,
+      "row": 1,
+      "cite": "Va. Code § 35.1-18"
+    },
+    {
+      "id": "salestax",
+      "type": "service",
+      "name": "Register to collect sales tax (Form R-1)",
+      "col": 9,
+      "row": 3,
+      "cite": "Va. Code § 58.1-613"
+    },
+    {
+      "id": "g_hire",
+      "type": "xor",
+      "name": "Hiring anyone?",
+      "col": 10,
+      "row": 0,
+      "cite": "Survey B7"
+    },
+    {
+      "id": "employer",
+      "type": "service",
+      "name": "Withholding, unemployment (VEC) and workers' comp accounts",
+      "col": 11,
+      "row": 3,
+      "cite": "Va. Code § 65.2-101"
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "name": "Open for business",
+      "col": 12,
+      "row": 0
+    }
+  ],
+  "flows": [
+    {
+      "from": "s",
+      "to": "own"
+    },
+    {
+      "from": "own",
+      "to": "g1"
+    },
+    {
+      "from": "g1",
+      "to": "dba",
+      "name": "yes"
+    },
+    {
+      "from": "g1",
+      "to": "llc",
+      "name": "no, an LLC"
+    },
+    {
+      "from": "dba",
+      "to": "ein",
+      "via": [
+        [
+          3.5,
+          1
+        ],
+        [
+          3.5,
+          0
+        ]
+      ]
+    },
+    {
+      "from": "llc",
+      "to": "ein",
+      "via": [
+        [
+          3.5,
+          2
+        ],
+        [
+          3.5,
+          1
+        ]
+      ],
+      "join": true
+    },
+    {
+      "from": "ein",
+      "to": "bank"
+    },
+    {
+      "from": "bank",
+      "to": "bpol"
+    },
+    {
+      "from": "bpol",
+      "to": "zoning"
+    },
+    {
+      "from": "zoning",
+      "to": "g_sales"
+    },
+    {
+      "from": "g_sales",
+      "to": "health",
+      "name": "food"
+    },
+    {
+      "from": "g_sales",
+      "to": "salestax",
+      "name": "goods"
+    },
+    {
+      "from": "g_sales",
+      "to": "g_hire",
+      "name": "neither"
+    },
+    {
+      "from": "health",
+      "to": "g_hire"
+    },
+    {
+      "from": "salestax",
+      "to": "g_hire"
+    },
+    {
+      "from": "g_hire",
+      "to": "employer",
+      "name": "yes"
+    },
+    {
+      "from": "g_hire",
+      "to": "end",
+      "name": "no"
+    },
+    {
+      "from": "employer",
+      "to": "end",
+      "via": [
+        [
+          11.5,
+          3
+        ],
+        [
+          11.5,
+          0
+        ]
+      ],
+      "join": true
+    }
+  ]
+}

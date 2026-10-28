@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrepreneurship Readiness Survey — incarcerated &amp; returning citizens · Doing Process</title>
+<meta name="description" content="A voluntary, anonymous survey for people inside or within two years of release: interest in running a business, ID, banking, licences, record, taxes, money and learning preferences. Every question maps to a step in the business start-up process model.">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%230d6b60' stroke-width='4'/%3E%3C/svg%3E">
+</head>
+<body id="top">
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span>doing<b>process</b>.org</a>
+    <nav aria-label="Site">
+      <a href="start-a-business.html">The road</a>
+      <a href="survey.html" aria-current="page">Survey</a>
+      <a href="index.html#fit" class="hide-m">How it fits</a>
+      <a href="index.html#handbook" class="hide-m">Handbook</a>
+      <a href="https://github.com/alibama/doingprocess">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap hero sub">
+  <p class="eyebrow">Readiness survey · draft for cognitive testing</p>
+  <h1>Entrepreneurship Readiness Survey for <em>incarcerated and returning citizens</em></h1>
+  <p class="lede">This survey does two jobs at once. It tells a program what people inside want from entrepreneurship education, and it
+    captures the facts that decide which path each person takes through the business start-up process: ID, banking, business entity,
+    licences, taxes, money. Every question carries a short code; the crosswalk at the end maps each code to a step in the model.</p>
+  <div class="actions noprint">
+    <button class="btn primary" onclick="window.print()">Print the survey</button>
+    <a class="btn" href="#staff">Staff survey</a>
+    <a class="btn" href="#crosswalk">Crosswalk to the model</a>
+    <label class="toggle-routes" style="margin-left:auto"><input type="checkbox" id="routes"> show where each answer goes in the model</label>
+  </div>
+</div>
+
+<section class="tight">
+  <div class="wrap">
+    <figure class="diagram">
+      <div class="scroller"><img class="fit" src="assets/diagrams/survey_to_path.svg" width="1382" height="382" alt="BPMN map: survey handed in, answers entered, process variables written, decision table picks the path: full start-up path, job first then business, or learning track only."></div>
+      <figcaption><span class="t">From survey answers to a personal path</span>
+        <span class="links">draft <a href="models/survey_to_path.bpmn" download>.bpmn</a></span></figcaption>
+    </figure>
+    <div class="grid cards3">
+      <div class="card"><span class="tag">Two audiences</span><h3>Participants and staff</h3><p>People currently incarcerated, or within about 24 months of release, take the main instrument. Facility and reentry staff take a short companion survey about what the facility can support: classes, internet, ID help, release planning.</p></div>
+      <div class="card"><span class="tag">About 45 questions</span><h3>20 to 25 minutes</h3><p>Eight short sections, mostly check boxes. Check one unless it says "check all that apply". Every question can be skipped. Sections G and H can be dropped for a short version.</p></div>
+      <div class="card"><span class="tag">Reading level</span><h3>6th grade or below</h3><p>Written plainly because literacy varies widely and because prisoners are a specially protected research population. Offer read-aloud by a non-staff volunteer, large print and a Spanish version.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- administration -->
+<section id="admin">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow"><span class="n">Before fielding</span></p>
+      <h2>Administration notes</h2>
+      <p>The survey must be clearly voluntary, anonymous by default, and approved before it is used.</p>
+    </div>
+    <div class="grid cards3">
+      <div class="card"><span class="tag">Ethics and approvals</span>
+        <ul class="ticks">
+          <li>If results will be published or used as research, get IRB review. Prisoners fall under federal human-subjects protections (45 CFR 46, Subpart C), which require that participation give no advantage or penalty in parole, good time or housing.</li>
+          <li>Get written approval from the Department of Corrections or jail administration before fielding. Many facilities review every question.</li>
+          <li>Say plainly that taking or skipping the survey has no effect on release, programs or privileges.</li>
+        </ul></div>
+      <div class="card"><span class="tag">Privacy</span>
+        <ul class="ticks">
+          <li>Default to anonymous. No names or DOC numbers on the form. For follow-up, use a separate, detachable opt-in card.</li>
+          <li>Do not ask about the person's offence, and never about undetected crimes. Ask only about record type where it affects licensing: felony versus misdemeanour, and the broad categories licensing boards screen for.</li>
+          <li>Staff may see paper forms. Use sealed envelopes or a drop box not handled by correctional officers.</li>
+        </ul></div>
+      <div class="card"><span class="tag">Accessibility and literacy</span>
+        <ul class="ticks">
+          <li>Offer a read-aloud option by a non-staff volunteer, large print, and a Spanish version.</li>
+          <li>Use check boxes over writing. Keep open-ended questions optional.</li>
+          <li>Every question allows "I don't know" or "Prefer not to say".</li>
+          <li>Target 20 to 25 minutes. Sections G and H can be dropped for a short version.</li>
+        </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- the survey -->
+<section id="survey">
+  <div class="wrap survey">
+    <div class="script">
+      <span class="k">Script to read before starting</span>
+      This survey asks about your interest in running your own business and what help you might need. It is voluntary. You can skip any
+      question or stop at any time. Your answers are anonymous and will not be shared with the parole board, your counselor, or anyone
+      deciding your release. There are no right or wrong answers.
+    </div>
+
+    <p class="toc noprint">
+      <a href="#A">A · About you</a><a href="#B">B · Interest</a><a href="#C">C · Papers and ID</a><a href="#D">D · Banking</a>
+      <a href="#E">E · Skills, licences, record</a><a href="#F">F · Money and taxes</a><a href="#G">G · Learning</a><a href="#H">H · Support</a>
+    </p>
+    <p class="small">Check one box unless it says "check all that apply". Every question can be skipped.</p>
+
+    <div class="sec" id="A">
+      <h3><span class="l">A</span>About you</h3>
+      <div class="q"><div class="qt"><span class="code">A1</span><span class="text">How long until your expected release?</span></div>
+        <div class="opts"><span>Less than 6 months</span><span>6–12 months</span><span>1–2 years</span><span>2–5 years</span><span>More than 5 years</span><span>Don't know</span></div>
+        <div class="route">months_to_release → timer start. Under 12 months: start ID and banking tasks inside. Longer: education track only.</div></div>
+      <div class="q"><div class="qt"><span class="code">A2</span><span class="text">What state do you expect to live in after release?<span class="blank"></span> <span class="hint">County or city, if you know:</span><span class="blank"></span></span></div>
+        <div class="route">release_state, release_county → DMN input. Selects state rules for licensing, LLC filing, sales tax and the local business licence.</div></div>
+      <div class="q"><div class="qt"><span class="code">A3</span><span class="text">Your age</span></div>
+        <div class="opts"><span>18–24</span><span>25–34</span><span>35–44</span><span>45–54</span><span>55+</span></div></div>
+      <div class="q"><div class="qt"><span class="code">A4</span><span class="text">Highest schooling finished</span></div>
+        <div class="opts"><span>Some grade school</span><span>Some high school</span><span>GED or HS diploma</span><span>Some college or trade school</span><span>College degree</span></div></div>
+      <div class="q"><div class="qt"><span class="code">A5</span><span class="text">Will you be on parole, probation, or supervised release after you get out?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span><span>Don't know</span></div>
+        <div class="route">supervision → exclusive gateway. Adds "check with your parole or probation officer" before any business activity.</div></div>
+    </div>
+
+    <div class="sec" id="B">
+      <h3><span class="l">B</span>Your interest in running a business</h3>
+      <div class="q"><div class="qt"><span class="code">B1</span><span class="text">How interested are you in starting your own business someday?</span></div>
+        <div class="opts"><span>Very</span><span>Somewhat</span><span>A little</span><span>Not at all</span></div>
+        <p class="small" style="margin:.5rem 0 0 2.9rem">If "Not at all", you can skip to Section G.</p>
+        <div class="route">interest_level → routes to the full start-up path, "job first, business later", or learning only.</div></div>
+      <div class="q"><div class="qt"><span class="code">B2</span><span class="text">Have you ever earned money working for yourself? <span class="hint">(Examples: cutting hair, fixing cars, lawn care, cooking, selling things, cleaning, construction side jobs.)</span></span></div>
+        <div class="opts"><span>Yes, often</span><span>Yes, a few times</span><span>No</span></div></div>
+      <div class="q"><div class="qt"><span class="code">B3</span><span class="text">What kind of business interests you? <span class="hint">(check all that apply)</span></span></div>
+        <div class="opts"><span>Barbering, hair, nails, or beauty</span><span>Food (catering, food truck, baking)</span><span>Construction, painting, or handyman</span><span>Electrical, plumbing, or HVAC</span><span>Auto repair or detailing</span><span>Landscaping or cleaning</span><span>Trucking or moving</span><span>Selling products (online or in person)</span><span>Art, music, clothing, or design</span><span>Tattooing</span><span>Fitness or coaching</span><span>Child care or elder care</span><span>Tech or computer work</span><span>Other:<span class="blank" style="min-width:8rem"></span></span></div>
+        <div class="route">business_type → DMN: licence required? Looks up occupational licence, permit, and health or trade inspection requirements.</div></div>
+      <div class="q"><div class="qt"><span class="code">B4</span><span class="text">Do you have a specific business idea? Describe it in a few words <span class="hint">(optional)</span>:<span class="blank"></span></span></div></div>
+      <div class="q"><div class="qt"><span class="code">B5</span><span class="text">How would you want to run it?</span></div>
+        <div class="opts"><span>By myself</span><span>With family</span><span>With a partner</span><span>As a co-op with others</span><span>Not sure</span></div>
+        <div class="route">ownership_model → DMN: entity choice. Sole prop, single-member LLC, multi-member LLC or partnership, or worker co-op subprocess.</div></div>
+      <div class="q"><div class="qt"><span class="code">B6</span><span class="text">When would you want to start?</span></div>
+        <div class="opts"><span>Right after release</span><span>Within a year</span><span>After I have a regular job for a while</span><span>Not sure</span></div>
+        <div class="route">start_timing → with B1, picks the path.</div></div>
+      <div class="q"><div class="qt"><span class="code">B7</span><span class="text">Would you need to hire other people?</span></div>
+        <div class="opts"><span>Yes</span><span>Maybe later</span><span>No</span><span>Not sure</span></div>
+        <div class="route">will_hire → exclusive gateway. Adds employer tasks: EIN required, state withholding and unemployment accounts, workers' comp.</div></div>
+    </div>
+
+    <div class="sec" id="C">
+      <h3><span class="l">C</span>Papers and ID</h3>
+      <p class="intro">Most business steps need ID first. These questions help us know where to start.</p>
+      <div class="q"><div class="qt"><span class="code">C1</span><span class="text">Which of these will you have when you are released? <span class="hint">(check all that apply)</span></span></div>
+        <div class="opts"><span>Social Security card</span><span>Birth certificate</span><span>State ID or driver's license (not expired)</span><span>Passport</span><span>Don't know</span></div>
+        <div class="route">has_ssn_card, has_birth_cert, has_valid_id → subprocess "Obtain ID" generates only the missing document tasks, in order: birth certificate, then Social Security card, then state ID.</div></div>
+      <div class="q"><div class="qt"><span class="code">C2</span><span class="text">Do you have a Social Security number?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span><span>Prefer not to say</span></div></div>
+      <div class="q"><div class="qt"><span class="code">C3</span><span class="text">Is your driver's license suspended or revoked, or do you owe fees to get it back?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span><span>Never had one</span><span>Don't know</span></div>
+        <div class="route">license_suspended → boundary event. Adds the reinstatement task; flags transportation as a barrier.</div></div>
+      <div class="q"><div class="qt"><span class="code">C4</span><span class="text">Does your facility help people get ID before release?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span><span>Don't know</span></div></div>
+    </div>
+
+    <div class="sec" id="D">
+      <h3><span class="l">D</span>Banking and credit</h3>
+      <div class="q"><div class="qt"><span class="code">D1</span><span class="text">Have you ever had a bank or credit union checking account?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span></div>
+        <div class="route">banked_before → DMN: account type. Standard account, second-chance account, or credit-union referral.</div></div>
+      <div class="q"><div class="qt"><span class="code">D2</span><span class="text">Was a bank account ever closed while you owed the bank money?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span><span>Don't know</span></div>
+        <div class="route">chex_risk → DMN: account type.</div></div>
+      <div class="q"><div class="qt"><span class="code">D3</span><span class="text">Do you know your credit score or what is on your credit report?</span></div>
+        <div class="opts"><span>Yes</span><span>I have a rough idea</span><span>No</span></div>
+        <div class="route">credit_known → subprocess "Credit and debts": pull the free credit report.</div></div>
+      <div class="q"><div class="qt"><span class="code">D4</span><span class="text">Which of these will you owe after release? <span class="hint">(check all that apply)</span></span></div>
+        <div class="opts"><span>Court fines or fees</span><span>Restitution</span><span>Child support</span><span>Back taxes</span><span>Medical or other bills</span><span>None</span><span>Don't know</span><span>Prefer not to say</span></div>
+        <div class="route">debts[] → child support and fines tasks; affects loan eligibility.</div></div>
+      <div class="q"><div class="qt"><span class="code">D5</span><span class="text">Will a court or agency take money from your pay (garnish wages)?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span><span>Don't know</span></div>
+        <div class="route">garnishment → subprocess "Credit and debts".</div></div>
+    </div>
+
+    <div class="sec" id="E">
+      <h3><span class="l">E</span>Skills, licenses, and your record</h3>
+      <p class="intro">Some businesses need a state license. Some licensing boards look at criminal records. These questions help us know which paths are open.</p>
+      <div class="q"><div class="qt"><span class="code">E1</span><span class="text">Which certificates or trade training have you earned, or are earning now? <span class="hint">(check all that apply)</span></span></div>
+        <div class="opts"><span>OSHA 10 or 30</span><span>ServSafe or food handler</span><span>Barbering or cosmetology hours</span><span>Welding</span><span>Electrical, plumbing, or HVAC</span><span>Forklift or CDL prep</span><span>Computer or Microsoft Office</span><span>Apprenticeship</span><span>None yet</span><span>Other:<span class="blank" style="min-width:8rem"></span></span></div>
+        <div class="route">certs[] → data object. Pre-fills experience for licence and microloan applications.</div></div>
+      <div class="q"><div class="qt"><span class="code">E2</span><span class="text">Do you think the business you want needs a license or permit?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span><span>Don't know</span></div></div>
+      <div class="q"><div class="qt"><span class="code">E3</span><span class="text">Is your conviction a felony, a misdemeanor, or both?</span></div>
+        <div class="opts"><span>Felony</span><span>Misdemeanor only</span><span>Prefer not to say</span></div>
+        <div class="route">record_class → DMN: licensing barrier. Checks the release state's licensing rules (direct-relationship tests, pre-application determinations, waivers).</div></div>
+      <div class="q"><div class="qt"><span class="code">E4</span><span class="text">Licensing boards sometimes ask about certain kinds of records. Does your record include any of these? <span class="hint">(check all that apply)</span></span></div>
+        <div class="opts"><span>Financial crime (fraud, theft, forgery)</span><span>Drug-related</span><span>Violence-related</span><span>Involving a child or vulnerable adult</span><span>Driving-related</span><span>None of these</span><span>Prefer not to say</span></div>
+        <div class="route">record_categories[] → DMN: licensing barrier.</div></div>
+      <div class="q"><div class="qt"><span class="code">E5</span><span class="text">Do you expect any release conditions that limit the work you can do, where you can go, or your hours <span class="hint">(curfew, no internet, no handling cash)</span>?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span><span>Don't know</span></div>
+        <div class="route">conditions_flag → with A5, adds the "check with your officer" task.</div></div>
+    </div>
+
+    <div class="sec" id="F">
+      <h3><span class="l">F</span>Money and taxes</h3>
+      <div class="q"><div class="qt"><span class="code">F1</span><span class="text">Where could start-up money come from? <span class="hint">(check all that apply)</span></span></div>
+        <div class="opts"><span>My own savings</span><span>Family or friends</span><span>A small loan</span><span>A grant</span><span>Selling things I own</span><span>Starting with no money</span><span>Don't know</span></div>
+        <div class="route">capital_sources[] → DMN: funding path. Bootstrap, family, CDFI microloan, SBA microloan, or grant tasks.</div></div>
+      <div class="q"><div class="qt"><span class="code">F2</span><span class="text">About how much do you think you'd need to start?</span></div>
+        <div class="opts"><span>Under $500</span><span>$500–$2,500</span><span>$2,500–$10,000</span><span>More than $10,000</span><span>Don't know</span></div>
+        <div class="route">capital_need → DMN: funding path.</div></div>
+      <div class="q"><div class="qt"><span class="code">F3</span><span class="text">Have you ever filed a tax return?</span></div>
+        <div class="opts"><span>Yes, every year I worked</span><span>Yes, some years</span><span>Never</span><span>Don't know</span></div>
+        <div class="route">tax_history → subprocess "Taxes": adds a back-filing check.</div></div>
+      <div class="q"><div class="qt"><span class="code">F4</span><span class="text">Do you know what these are? <span class="hint">(check the ones you know)</span></span></div>
+        <div class="opts"><span>EIN (business tax number)</span><span>1099 form</span><span>Self-employment tax</span><span>Quarterly estimated taxes</span><span>Business license</span><span>LLC</span><span>Sales tax</span><span>None of these</span></div>
+        <div class="route">tax_literacy → subprocess "Taxes": EIN, self-employment and quarterly tax education.</div></div>
+      <div class="q"><div class="qt"><span class="code">F5</span><span class="text">Do you expect to get benefits after release that could change if you earn money? <span class="hint">(check all that apply)</span></span></div>
+        <div class="opts"><span>SNAP (food stamps)</span><span>SSI or SSDI</span><span>Medicaid</span><span>Housing help</span><span>None</span><span>Don't know</span></div>
+        <div class="route">benefits[] → exclusive gateway. Adds benefits counseling so self-employment income does not cut off SSI, SNAP or Medicaid unexpectedly.</div></div>
+    </div>
+
+    <div class="sec" id="G">
+      <h3><span class="l">G</span>How you like to learn</h3>
+      <div class="q"><div class="qt"><span class="code">G1</span><span class="text">Which topics would help you most? <span class="hint">Pick your top 3.</span></span></div>
+        <div class="opts"><span>Coming up with a business idea</span><span>Writing a business plan</span><span>Pricing and budgeting</span><span>Getting ID and a bank account</span><span>Fixing credit</span><span>Licenses and permits</span><span>Setting up an LLC</span><span>Taxes and record-keeping</span><span>Getting a loan or grant</span><span>Marketing and social media</span><span>Talking to customers</span><span>Hiring people</span></div>
+        <div class="route">learning_prefs → not routed. Shapes curriculum and delivery; feeds program design, not individual cases.</div></div>
+      <div class="q"><div class="qt"><span class="code">G2</span><span class="text">How do you like to learn? <span class="hint">(check all that apply)</span></span></div>
+        <div class="opts"><span>Classes in a group</span><span>One-on-one with a mentor</span><span>Workbooks on my own</span><span>Videos or tablet lessons</span><span>Hands-on practice</span><span>Hearing from people who've done it</span></div></div>
+      <div class="q"><div class="qt"><span class="code">G3</span><span class="text">Do you have access to a tablet or computer where you are now?</span></div>
+        <div class="opts"><span>Yes, often</span><span>Sometimes</span><span>No</span></div></div>
+      <div class="q"><div class="qt"><span class="code">G4</span><span class="text">Would you want a mentor who has run a business, including someone who was formerly incarcerated?</span></div>
+        <div class="opts"><span>Yes</span><span>Maybe</span><span>No</span></div></div>
+      <div class="q"><div class="qt"><span class="code">G5</span><span class="text">How many hours a week could you give to a business class?</span></div>
+        <div class="opts"><span>1–2</span><span>3–5</span><span>6–10</span><span>More than 10</span></div></div>
+    </div>
+
+    <div class="sec" id="H">
+      <h3><span class="l">H</span>Support and barriers</h3>
+      <div class="q"><div class="qt"><span class="code">H1</span><span class="text">What would make it hardest to start a business? <span class="hint">(check all that apply)</span></span></div>
+        <div class="opts"><span>No money to start</span><span>Bad or no credit</span><span>My record</span><span>No ID</span><span>No transportation</span><span>No stable place to live</span><span>Not knowing the rules</span><span>Release conditions</span><span>Family responsibilities</span><span>Health</span><span>Other:<span class="blank" style="min-width:8rem"></span></span></div>
+        <div class="route">barriers[] → script task. Prioritizes referrals (housing, transportation, mentoring) before start-up tasks.</div></div>
+      <div class="q"><div class="qt"><span class="code">H2</span><span class="text">Do you expect to have a stable place to live after release?</span></div>
+        <div class="opts"><span>Yes</span><span>Probably</span><span>No</span><span>Don't know</span></div>
+        <div class="route">housing_stable → script task: housing referral first.</div></div>
+      <div class="q"><div class="qt"><span class="code">H3</span><span class="text">Is there someone outside who could help <span class="hint">(family, friend, church, reentry group)</span>?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span><span>Not sure</span></div>
+        <div class="route">outside_support → script task.</div></div>
+      <div class="q"><div class="qt"><span class="code">H4</span><span class="text">What is one thing a program like this should include? <span class="hint">(optional)</span><span class="blank"></span></span></div></div>
+      <div class="q"><div class="qt"><span class="code">H5</span><span class="text">Anything else you want us to know? <span class="hint">(optional)</span><span class="blank"></span></span></div></div>
+    </div>
+
+    <div class="callout teal">
+      <p><b>Optional, detach and hand in separately.</b> &nbsp;☐ I'd like to be contacted about a business class.<br>
+      Name / DOC # (only on this card):<span class="blank"></span></p>
+    </div>
+  </div>
+</section>
+
+<!-- staff survey -->
+<section id="staff">
+  <div class="wrap survey">
+    <div class="head">
+      <p class="eyebrow"><span class="n">Companion</span></p>
+      <h2>Staff and facility survey</h2>
+      <p>One per facility, filled in by an education, reentry or program director. It tells you which steps can start inside and which must wait until after release.</p>
+    </div>
+    <div class="sec">
+      <div class="q"><div class="qt"><span class="code">1</span><span class="text">Facility type</span></div>
+        <div class="opts"><span>State prison</span><span>Federal prison</span><span>Regional or local jail</span><span>Pre-release or work-release center</span></div></div>
+      <div class="q"><div class="qt"><span class="code">2</span><span class="text">Average length of stay, and how many people release each month.<span class="blank"></span></span></div></div>
+      <div class="q"><div class="qt"><span class="code">3</span><span class="text">Which programs run now?</span></div>
+        <div class="opts"><span>GED / adult ed</span><span>College courses</span><span>Career and technical ed</span><span>Entrepreneurship or business</span><span>Financial literacy</span><span>Reentry planning</span></div></div>
+      <div class="q"><div class="qt"><span class="code">4</span><span class="text">Can residents get ID before release?</span></div>
+        <div class="opts"><span>State ID through DMV partnership</span><span>Birth certificate orders</span><span>Social Security card replacement</span><span>None</span></div>
+        <div class="route">Decides which "Obtain ID" tasks carry the can-start-inside tag at this facility.</div></div>
+      <div class="q"><div class="qt"><span class="code">5</span><span class="text">Can residents open a bank account before release <span class="hint">(e.g., a second-chance account through a partner bank)</span>?</span></div>
+        <div class="opts"><span>Yes</span><span>No</span><span>Don't know</span></div></div>
+      <div class="q"><div class="qt"><span class="code">6</span><span class="text">Technology</span></div>
+        <div class="opts"><span>Tablets with a learning platform</span><span>Supervised computer lab</span><span>Offline content only</span><span>None</span></div>
+        <p class="small" style="margin:.5rem 0 0 2.9rem">Can tablets load a custom app or web course?<span class="blank"></span></p></div>
+      <div class="q"><div class="qt"><span class="code">7</span><span class="text">Which industry certifications can residents earn inside?<span class="blank"></span></span></div></div>
+      <div class="q"><div class="qt"><span class="code">8</span><span class="text">Are outside mentors or volunteers allowed in? How often? What clearance do they need?<span class="blank"></span></span></div></div>
+      <div class="q"><div class="qt"><span class="code">9</span><span class="text">Can program records (completed modules, certificates) leave with the person at release, on paper or digitally?<span class="blank"></span></span></div></div>
+      <div class="q"><div class="qt"><span class="code">10</span><span class="text">Biggest obstacles to running an entrepreneurship program here:<span class="blank"></span></span></div></div>
+      <div class="q"><div class="qt"><span class="code">11</span><span class="text">Would the facility pilot a guided business start-up workflow (paper or tablet)?</span></div>
+        <div class="opts"><span>Yes</span><span>Maybe</span><span>No</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- crosswalk -->
+<section id="crosswalk">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow"><span class="n">Crosswalk</span></p>
+      <h2>From a survey code to a step in the model</h2>
+      <p>Each survey answer becomes a process variable that either opens a subprocess, skips one, or feeds a decision table. ID comes first because nearly every later step — bank, EIN, licence, loan — depends on it. The same table is what the <a href="start-a-business.html">maps</a> cite in their small "Survey …" notes.</p>
+    </div>
+    <div class="tablewrap">
+    <table class="plain">
+      <thead><tr><th>Code</th><th>Process variable</th><th>BPMN element</th><th>Effect on the path</th></tr></thead>
+      <tbody>
+        <tr><td class="code">A1</td><td class="var">months_to_release</td><td>Timer / start gateway</td><td>Under 12 months: start ID and banking tasks inside. Longer: education track only.</td></tr>
+        <tr><td class="code">A2</td><td class="var">release_state, release_county</td><td>DMN input</td><td>Selects state-specific rules for licensing, LLC filing, sales tax, and local business licence.</td></tr>
+        <tr><td class="code">A5, E5</td><td class="var">supervision, conditions_flag</td><td>Exclusive gateway</td><td>Adds a "check with parole/probation officer" user task before any business activity.</td></tr>
+        <tr><td class="code">B1, B6</td><td class="var">interest_level, start_timing</td><td>Exclusive gateway</td><td>Routes to the full start-up path, "job first, business later", or learning only.</td></tr>
+        <tr><td class="code">B3, B4</td><td class="var">business_type</td><td>DMN: licence required?</td><td>Looks up occupational licence, permit, and health or trade inspection requirements.</td></tr>
+        <tr><td class="code">B5</td><td class="var">ownership_model</td><td>DMN: entity choice</td><td>Sole prop, single-member LLC, multi-member LLC/partnership, or worker co-op subprocess.</td></tr>
+        <tr><td class="code">B7</td><td class="var">will_hire</td><td>Exclusive gateway</td><td>Adds employer tasks: EIN required, state withholding and unemployment accounts, workers' comp.</td></tr>
+        <tr><td class="code">C1, C2</td><td class="var">has_ssn_card, has_birth_cert, has_valid_id</td><td>Subprocess: Obtain ID</td><td>Generates only the missing document tasks, in order (birth certificate, then SS card, then state ID).</td></tr>
+        <tr><td class="code">C3</td><td class="var">license_suspended</td><td>Boundary event</td><td>Adds the reinstatement task; flags transportation as a barrier.</td></tr>
+        <tr><td class="code">D1, D2</td><td class="var">banked_before, chex_risk</td><td>DMN: account type</td><td>Standard account, second-chance account, or credit-union referral.</td></tr>
+        <tr><td class="code">D3, D4, D5</td><td class="var">credit_known, debts[], garnishment</td><td>Subprocess: Credit and debts</td><td>Pull the free credit report; child support and fines tasks; affects loan eligibility.</td></tr>
+        <tr><td class="code">E1</td><td class="var">certs[]</td><td>Data object</td><td>Pre-fills experience for licence applications and microloan applications.</td></tr>
+        <tr><td class="code">E3, E4</td><td class="var">record_class, record_categories[]</td><td>DMN: licensing barrier</td><td>Checks the release state's licensing rules (direct-relationship tests, pre-application determinations, waivers).</td></tr>
+        <tr><td class="code">F1, F2</td><td class="var">capital_sources[], capital_need</td><td>DMN: funding path</td><td>Bootstrap, family, CDFI microloan, SBA microloan, or grant tasks.</td></tr>
+        <tr><td class="code">F3, F4</td><td class="var">tax_history, tax_literacy</td><td>Subprocess: Taxes</td><td>Adds back-filing check, EIN, self-employment and quarterly tax education.</td></tr>
+        <tr><td class="code">F5</td><td class="var">benefits[]</td><td>Exclusive gateway</td><td>Adds a benefits-counseling task so self-employment income does not cut off SSI, SNAP, or Medicaid unexpectedly.</td></tr>
+        <tr><td class="code">G1–G5</td><td class="var">learning_prefs</td><td>Not routed</td><td>Shapes curriculum and delivery; feeds program design, not individual cases.</td></tr>
+        <tr><td class="code">H1–H3</td><td class="var">barriers[], housing_stable, outside_support</td><td>Script task</td><td>Prioritizes referrals (housing, transportation, mentoring) before start-up tasks.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- next steps -->
+<section id="next" class="dark">
+  <div class="wrap grid g2">
+    <div>
+      <p class="eyebrow"><span class="n">Next steps</span></p>
+      <h2 style="font-size:clamp(1.8rem,3.6vw,2.6rem);margin-bottom:.5em">Before anyone fills this in</h2>
+      <ul class="ticks" style="color:#c9c2b2">
+        <li>Cognitive-test the survey with 5 to 8 formerly incarcerated people; fix any question they read differently than intended.</li>
+        <li>Run a readability check and aim for 6th grade or below.</li>
+        <li>Pick the first release state and build its decision tables (licensing, entity filing, local business licence). Virginia's <a href="start-a-business.html#license">licensing-barrier table</a> is the first draft.</li>
+        <li>Decide paper versus tablet. Paper needs a data-entry step; a tablet form can write process variables directly.</li>
+        <li>Contact the DOC research office and an IRB about approval timelines.</li>
+        <li>Partner with a reentry group and a CDFI or credit union for the banking and microloan branches.</li>
+      </ul>
+    </div>
+    <div class="card"><span class="tag">Help us test it</span><h3>Read it aloud to someone</h3><p>If you run a reentry program, teach inside, or have been through release yourself, we would like to know which questions read wrong, which are missing, and how long it really takes. <a href="mailto:hello@doingprocess.org">hello@doingprocess.org</a></p></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <div>© <span id="yr"></span> doingprocess.org · Doing process is due process.<br>
+      <span class="small">Survey text CC0. Not legal advice; not yet IRB-reviewed. Do not field without facility approval.</span></div>
+    <div class="mono">code Apache-2.0 · maps &amp; survey CC0 · <a href="https://github.com/alibama/doingprocess">source</a></div>
+  </div>
+</footer>
+<script>
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  const cb=document.getElementById('routes');
+  cb.addEventListener('change',()=>document.body.classList.toggle('show-routes',cb.checked));
+</script>
+</body>
+</html>

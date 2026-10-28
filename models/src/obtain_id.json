@@ -1,0 +1,280 @@
+{
+  "id": "obtain_id",
+  "name": "Getting an ID (and a driver's license back)",
+  "summary": "Nearly every later step needs ID, and the three documents depend on each other. Five offices are involved; facility staff can break the loop before release. Virginia is the worked example.",
+  "col_width": 178,
+  "row_height": 104,
+  "lanes": [
+    {
+      "name": "Returning citizen",
+      "rows": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Facility reentry staff",
+      "rows": [
+        2
+      ]
+    },
+    {
+      "name": "Vital records",
+      "rows": [
+        3
+      ]
+    },
+    {
+      "name": "Social Security",
+      "rows": [
+        4
+      ]
+    },
+    {
+      "name": "DMV",
+      "rows": [
+        5
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "s",
+      "type": "start",
+      "name": "Need ID for the next step",
+      "col": 0,
+      "row": 0
+    },
+    {
+      "id": "g_bc",
+      "type": "xor",
+      "name": "Have your birth certificate?",
+      "col": 1,
+      "row": 0,
+      "cite": "Survey C1"
+    },
+    {
+      "id": "n_loop",
+      "type": "note",
+      "for": "g_bc",
+      "col": 2,
+      "row": 1,
+      "w": 200,
+      "h": 70,
+      "text": "The catch: a birth-certificate request usually asks for photo ID, and a photo ID needs a birth certificate. Staff can break the loop."
+    },
+    {
+      "id": "staff_bc",
+      "type": "user",
+      "name": "Verify identity on the request form",
+      "col": 2,
+      "row": 2,
+      "inside": true,
+      "cite": "?"
+    },
+    {
+      "id": "vr",
+      "type": "service",
+      "name": "Mail a certified copy ($12)",
+      "col": 3,
+      "row": 3,
+      "cite": "Va. Code § 32.1-272"
+    },
+    {
+      "id": "vr_t",
+      "type": "boundary-timer",
+      "attached": "vr",
+      "name": "weeks by mail",
+      "duration": "P8W",
+      "non_interrupting": true
+    },
+    {
+      "id": "g_ss",
+      "type": "xor",
+      "name": "Have your Social Security card?",
+      "col": 4,
+      "row": 0,
+      "cite": "Survey C1, C2"
+    },
+    {
+      "id": "staff_ss",
+      "type": "user",
+      "name": "Pre-release card request through the facility",
+      "col": 5,
+      "row": 2,
+      "inside": true,
+      "cite": "?"
+    },
+    {
+      "id": "ssa",
+      "type": "service",
+      "name": "Issue a replacement card",
+      "col": 6,
+      "row": 4,
+      "cite": "20 CFR 422.103"
+    },
+    {
+      "id": "g_id",
+      "type": "xor",
+      "name": "Valid state ID or license?",
+      "col": 7,
+      "row": 0,
+      "cite": "Survey C1"
+    },
+    {
+      "id": "dmvc",
+      "type": "user",
+      "name": "Apply at a DMV Connect visit or a DMV office",
+      "col": 8,
+      "row": 5,
+      "inside": true,
+      "cite": "Va. Code § 46.2-345"
+    },
+    {
+      "id": "n_dmv",
+      "type": "note",
+      "for": "g_id",
+      "col": 8,
+      "row": 1,
+      "w": 200,
+      "h": 70,
+      "text": "Needs proof of identity, legal presence, your SSN and two proofs of Virginia address. A sponsor's or shelter letter can count."
+    },
+    {
+      "id": "dmv_issue",
+      "type": "service",
+      "name": "Issue the ID card",
+      "col": 9,
+      "row": 5,
+      "cite": "Va. Code § 46.2-345"
+    },
+    {
+      "id": "dmv_t",
+      "type": "boundary-timer",
+      "attached": "dmv_issue",
+      "name": "arrives by mail",
+      "duration": "P15D",
+      "non_interrupting": true
+    },
+    {
+      "id": "g_dl",
+      "type": "xor",
+      "name": "License suspended or revoked?",
+      "col": 10,
+      "row": 0,
+      "cite": "Survey C3"
+    },
+    {
+      "id": "reinstate",
+      "type": "user",
+      "name": "Meet the reinstatement terms and pay the fee",
+      "col": 11,
+      "row": 1,
+      "cite": "Va. Code § 46.2-411"
+    },
+    {
+      "id": "dmv_re",
+      "type": "service",
+      "name": "Reinstate the license",
+      "col": 12,
+      "row": 5,
+      "cite": "Va. Code § 46.2-411"
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "name": "ID in hand",
+      "col": 13,
+      "row": 0
+    }
+  ],
+  "flows": [
+    {
+      "from": "s",
+      "to": "g_bc"
+    },
+    {
+      "from": "g_bc",
+      "to": "staff_bc",
+      "name": "no"
+    },
+    {
+      "from": "g_bc",
+      "to": "g_ss",
+      "name": "yes"
+    },
+    {
+      "from": "staff_bc",
+      "to": "vr"
+    },
+    {
+      "from": "vr",
+      "to": "g_ss"
+    },
+    {
+      "from": "g_ss",
+      "to": "staff_ss",
+      "name": "no"
+    },
+    {
+      "from": "g_ss",
+      "to": "g_id",
+      "name": "yes"
+    },
+    {
+      "from": "staff_ss",
+      "to": "ssa"
+    },
+    {
+      "from": "ssa",
+      "to": "g_id"
+    },
+    {
+      "from": "g_id",
+      "to": "dmvc",
+      "name": "no"
+    },
+    {
+      "from": "g_id",
+      "to": "g_dl",
+      "name": "yes"
+    },
+    {
+      "from": "dmvc",
+      "to": "dmv_issue"
+    },
+    {
+      "from": "dmv_issue",
+      "to": "g_dl"
+    },
+    {
+      "from": "g_dl",
+      "to": "reinstate",
+      "name": "yes"
+    },
+    {
+      "from": "g_dl",
+      "to": "end",
+      "name": "no"
+    },
+    {
+      "from": "reinstate",
+      "to": "dmv_re"
+    },
+    {
+      "from": "dmv_re",
+      "to": "end",
+      "via": [
+        [
+          12.5,
+          5
+        ],
+        [
+          12.5,
+          0
+        ]
+      ],
+      "join": true
+    }
+  ]
+}

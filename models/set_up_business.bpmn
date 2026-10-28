@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_set_up_business" targetNamespace="https://doingprocess.org/bpmn" exporter="doingprocess build_diagrams.py" exporterVersion="1">
+  <bpmn:collaboration id="Collab_set_up_business">
+    <bpmn:participant id="Participant_set_up_business" name="Setting up the business itself" processRef="Process_set_up_business" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_set_up_business" name="Setting up the business itself" isExecutable="false">
+    <bpmn:documentation>Ownership form, tax number, bank account, the local business license, and the extra registrations that depend on what you sell and whether you hire. Four offices, one person. Virginia is the worked example.</bpmn:documentation>
+    <bpmn:laneSet id="LaneSet_set_up_business">
+      <bpmn:lane id="Lane_set_up_business_0" name="Entrepreneur">
+        <bpmn:flowNodeRef>s</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>own</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>g1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>dba</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ein</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>bank</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>g_sales</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>health</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>g_hire</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>end</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_set_up_business_1" name="State Corp. Commission">
+        <bpmn:flowNodeRef>llc</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_set_up_business_2" name="IRS · Va. Tax · VEC">
+        <bpmn:flowNodeRef>salestax</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>employer</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_set_up_business_3" name="Your city or county">
+        <bpmn:flowNodeRef>bpol</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>zoning</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="s" name="Licensed, or no license needed">
+      <bpmn:outgoing>Flow_0</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:businessRuleTask id="own" name="Pick the ownership form">
+      <bpmn:documentation>Authority: Survey B5 → DMN entity_choice</bpmn:documentation>
+      <bpmn:incoming>Flow_0</bpmn:incoming>
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:exclusiveGateway id="g1" name="Just you, under your own name?">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="dba" name="Trade under your name, or file an assumed name">
+      <bpmn:documentation>Authority: Va. Code § 59.1-69</bpmn:documentation>
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="llc" name="File Articles of Organization ($100)">
+      <bpmn:documentation>Authority: Va. Code § 13.1-1011</bpmn:documentation>
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="ein" name="Get a free EIN from the IRS (same day, online)">
+      <bpmn:documentation>Authority: IRS Form SS-4</bpmn:documentation>
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:subProcess id="bank" name="Open the business account">
+      <bpmn:documentation>Authority: Survey D1, D2</bpmn:documentation>
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:subProcess>
+    <bpmn:userTask id="bpol" name="Apply for the local business license (BPOL)">
+      <bpmn:documentation>Authority: Va. Code § 58.1-3703</bpmn:documentation>
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="zoning" name="Zoning sign-off or home-occupation permit">
+      <bpmn:documentation>Authority: CITATION NEEDED</bpmn:documentation>
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="g_sales" name="Selling goods, or serving food?">
+      <bpmn:documentation>Authority: Survey B3</bpmn:documentation>
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="health" name="Health permit and kitchen inspection">
+      <bpmn:documentation>Authority: Va. Code § 35.1-18</bpmn:documentation>
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="salestax" name="Register to collect sales tax (Form R-1)">
+      <bpmn:documentation>Authority: Va. Code § 58.1-613</bpmn:documentation>
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="g_hire" name="Hiring anyone?">
+      <bpmn:documentation>Authority: Survey B7</bpmn:documentation>
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_16</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="employer" name="Withholding, unemployment (VEC) and workers' comp accounts">
+      <bpmn:documentation>Authority: Va. Code § 65.2-101</bpmn:documentation>
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+      <bpmn:outgoing>Flow_17</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="end" name="Open for business">
+      <bpmn:incoming>Flow_16</bpmn:incoming>
+      <bpmn:incoming>Flow_17</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0" sourceRef="s" targetRef="own" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="own" targetRef="g1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="g1" targetRef="dba" name="yes" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="g1" targetRef="llc" name="no, an LLC" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="dba" targetRef="ein" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="llc" targetRef="ein" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="ein" targetRef="bank" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="bank" targetRef="bpol" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="bpol" targetRef="zoning" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="zoning" targetRef="g_sales" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="g_sales" targetRef="health" name="food" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="g_sales" targetRef="salestax" name="goods" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="g_sales" targetRef="g_hire" name="neither" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="health" targetRef="g_hire" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="salestax" targetRef="g_hire" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="g_hire" targetRef="employer" name="yes" />
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="g_hire" targetRef="end" name="no" />
+    <bpmn:sequenceFlow id="Flow_17" sourceRef="employer" targetRef="end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_set_up_business">
+    <bpmndi:BPMNPlane id="Plane_set_up_business" bpmnElement="Collab_set_up_business">
+      <bpmndi:BPMNShape id="Participant_set_up_business_di" bpmnElement="Participant_set_up_business" isHorizontal="true"><dc:Bounds x="26" y="38" width="2354" height="532" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_set_up_business_0_di" bpmnElement="Lane_set_up_business_0" isHorizontal="true"><dc:Bounds x="56" y="44" width="2324" height="208" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_set_up_business_1_di" bpmnElement="Lane_set_up_business_1" isHorizontal="true"><dc:Bounds x="56" y="252" width="2324" height="104" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_set_up_business_2_di" bpmnElement="Lane_set_up_business_2" isHorizontal="true"><dc:Bounds x="56" y="356" width="2324" height="104" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_set_up_business_3_di" bpmnElement="Lane_set_up_business_3" isHorizontal="true"><dc:Bounds x="56" y="460" width="2324" height="104" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="s_di" bpmnElement="s"><dc:Bounds x="136" y="77" width="38" height="38" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="own_di" bpmnElement="own"><dc:Bounds x="259" y="59" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g1_di" bpmnElement="g1"><dc:Bounds x="487" y="72" width="48" height="48" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="dba_di" bpmnElement="dba"><dc:Bounds x="615" y="163" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="llc_di" bpmnElement="llc"><dc:Bounds x="615" y="267" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ein_di" bpmnElement="ein"><dc:Bounds x="793" y="59" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="bank_di" bpmnElement="bank" isExpanded="false"><dc:Bounds x="971" y="59" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="bpol_di" bpmnElement="bpol"><dc:Bounds x="1149" y="475" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="zoning_di" bpmnElement="zoning"><dc:Bounds x="1327" y="475" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g_sales_di" bpmnElement="g_sales"><dc:Bounds x="1555" y="72" width="48" height="48" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="health_di" bpmnElement="health"><dc:Bounds x="1683" y="163" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="salestax_di" bpmnElement="salestax"><dc:Bounds x="1683" y="371" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g_hire_di" bpmnElement="g_hire"><dc:Bounds x="1911" y="72" width="48" height="48" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="employer_di" bpmnElement="employer"><dc:Bounds x="2039" y="371" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_di" bpmnElement="end"><dc:Bounds x="2272" y="77" width="38" height="38" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0_di" bpmnElement="Flow_0"><di:waypoint x="174" y="96" /><di:waypoint x="259" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="407" y="96" /><di:waypoint x="487" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="511" y="120" /><di:waypoint x="511" y="200" /><di:waypoint x="615" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="511" y="120" /><di:waypoint x="511" y="304" /><di:waypoint x="615" y="304" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4"><di:waypoint x="763" y="200" /><di:waypoint x="778" y="200" /><di:waypoint x="778" y="96" /><di:waypoint x="793" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5"><di:waypoint x="763" y="304" /><di:waypoint x="778" y="304" /><di:waypoint x="778" y="200" /><di:waypoint x="867" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6"><di:waypoint x="941" y="96" /><di:waypoint x="971" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7"><di:waypoint x="1119" y="96" /><di:waypoint x="1134" y="96" /><di:waypoint x="1134" y="512" /><di:waypoint x="1149" y="512" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8"><di:waypoint x="1297" y="512" /><di:waypoint x="1327" y="512" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9"><di:waypoint x="1475" y="512" /><di:waypoint x="1579" y="512" /><di:waypoint x="1579" y="120" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10"><di:waypoint x="1579" y="120" /><di:waypoint x="1579" y="200" /><di:waypoint x="1683" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11"><di:waypoint x="1579" y="120" /><di:waypoint x="1579" y="408" /><di:waypoint x="1683" y="408" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12"><di:waypoint x="1603" y="96" /><di:waypoint x="1911" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13"><di:waypoint x="1831" y="200" /><di:waypoint x="1935" y="200" /><di:waypoint x="1935" y="120" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14"><di:waypoint x="1831" y="408" /><di:waypoint x="1935" y="408" /><di:waypoint x="1935" y="120" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15"><di:waypoint x="1935" y="120" /><di:waypoint x="1935" y="408" /><di:waypoint x="2039" y="408" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16_di" bpmnElement="Flow_16"><di:waypoint x="1959" y="96" /><di:waypoint x="2272" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17_di" bpmnElement="Flow_17"><di:waypoint x="2187" y="408" /><di:waypoint x="2202" y="408" /><di:waypoint x="2202" y="96" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

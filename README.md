@@ -10,6 +10,12 @@ and that knowledge is usually invisible and uncredited. This project captures it
 as **BPMN** process maps that can be scanned, recognized into a machine-readable
 model, checked against the law each step cites, and published under CC0.
 
+**First worked example: starting a business after release.** The site maps the
+whole road — ID, bank account, ownership form, licences, taxes, money, benefits —
+as BPMN with the law behind each step, and pairs it with a readiness survey whose
+answers pre-fill a person's path. Virginia is the first state. Every map is a
+draft until a reviewer signs off; missing authorities say *citation needed*.
+
 Everything here runs **locally** — recognition, OCR, checking, and storage on
 your own hardware, so material from contributors never depends on a third party.
 
@@ -17,11 +23,36 @@ your own hardware, so material from contributors never depends on a third party.
 
 | Path | What it is |
 |------|------------|
+| `site/` | The `doingprocess.org` website: three static pages, shared CSS, generated diagrams, downloadable models and PDFs. |
+| `models/` | The BPMN/DMN models: JSON specs in `models/src/`, generated `.bpmn`, hand-written `.dmn`. See [`models/README.md`](models/README.md). |
+| `tools/build_diagrams.py` | Turns the specs into SVG for the site and BPMN 2.0 XML. Standard library only. |
+| `update.sh` | One command to rebuild, commit and push. GitHub Pages redeploys. |
 | `intake/` | The local processing pipeline: scan → recognize → lint → provenance → sign-off. A Streamlit app **and** a headless CLI. |
-| `site/` | The `doingprocess.org` website (self-contained `index.html` + the downloadable PDFs). |
 | `handbook/` | The handbook (`build_handbook.py` regenerates the PDF). |
 | `packets/` | Print-and-mail contributor packet generators. |
 | `docs/` | Reference material, incl. the BPMN/DMN modeling guide. |
+
+## Update the website
+
+```bash
+./update.sh "What changed"      # rebuild diagrams → commit → push → Pages redeploys
+./update.sh --preview           # look at it first on http://localhost:8000
+```
+
+That is the whole workflow. Edit the HTML in `site/`, the maps in `models/src/*.json`,
+or the stylesheet in `site/assets/site.css`, then run the script. It finds a Python 3
+on its own (including the Windows install) and falls back to committing the existing
+SVGs if none is available. The GitHub Actions workflow in `.github/workflows/pages.yml`
+also rebuilds the diagrams on the server, so editing a JSON spec in the GitHub web UI
+is enough to redeploy.
+
+**First deploy:** push once, then check *Settings → Pages* shows "GitHub Actions" as the
+source (the workflow tries to enable it itself). The site appears at
+`https://alibama.github.io/doingprocess/`. To serve it at `doingprocess.org` instead,
+add a `CNAME` record at your DNS host pointing to `alibama.github.io`, put the domain in
+*Settings → Pages → Custom domain*, and commit a `site/CNAME` file containing
+`doingprocess.org`. Until then the Apache host keeps serving; set
+`DOINGPROCESS_RSYNC_TARGET=user@host:/path/` and `update.sh` will mirror `site/` there too.
 
 ## Do local processing (quickstart)
 
@@ -68,7 +99,8 @@ recognizer tracks, and the local-first / no-cloud details.
 - **Process maps** — most map contributors are working on paper by mail, not
   GitHub. Operators digitize those maps through `intake/`. The
   [handbook](handbook/) and the [contributor packet](site/doingprocess-contributor-packet.pdf)
-  document that flow.
+  document that flow. To fix or extend the business start-up maps directly, edit
+  `models/src/*.json` and open a pull request.
 
 ## Licensing
 
@@ -81,11 +113,6 @@ recognizer tracks, and the local-first / no-cloud details.
 This repo contains **no contributor data**. Scanned originals and any legal
 identity stay in a restricted archive outside version control (`.gitignore`d).
 Recognition is automatic; a human signs off before anything is published.
-
-## Publishing the site
-
-`site/` is static. Point GitHub Pages (or any host) at it; the PDF download
-links are relative, so keep the three files together.
 
 Built on open standards and projects: BPMN & DMN, SpiffWorkflow, bpmn-js, hdBPMN,
 and the ELCA sketch-to-BPMN detector. Part of the Lexipedia project.

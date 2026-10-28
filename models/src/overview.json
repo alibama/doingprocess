@@ -1,0 +1,235 @@
+{
+  "id": "overview",
+  "name": "Starting a business after release: the whole road",
+  "summary": "The end-to-end path from a release date to an open business. Each box with a plus sign is its own smaller process; survey answers decide which of them a person actually needs.",
+  "col_width": 178,
+  "row_height": 108,
+  "nodes": [
+    {
+      "id": "s",
+      "type": "timer-start",
+      "name": "Release within 12 months",
+      "col": 0,
+      "row": 0,
+      "cite": "Survey A1"
+    },
+    {
+      "id": "survey",
+      "type": "user",
+      "name": "Take the readiness survey",
+      "col": 1,
+      "row": 0,
+      "inside": true,
+      "cite": "Survey A–H"
+    },
+    {
+      "id": "g_sup",
+      "type": "xor",
+      "name": "Supervision after release?",
+      "col": 2,
+      "row": 0,
+      "cite": "Survey A5, E5"
+    },
+    {
+      "id": "po",
+      "type": "user",
+      "name": "Check your business plans with your PO",
+      "col": 3,
+      "row": 1,
+      "who": "probation / parole",
+      "cite": "release conditions"
+    },
+    {
+      "id": "id",
+      "type": "subprocess",
+      "name": "Get your ID",
+      "col": 4,
+      "row": 0,
+      "inside": true,
+      "who": "DMV · SSA · vital records"
+    },
+    {
+      "id": "entity",
+      "type": "subprocess",
+      "name": "Choose how to own it",
+      "col": 5,
+      "row": 0,
+      "who": "State Corporation Commission",
+      "cite": "Survey B5"
+    },
+    {
+      "id": "bank",
+      "type": "subprocess",
+      "name": "Open a bank account",
+      "col": 6,
+      "row": 0,
+      "who": "bank or credit union",
+      "cite": "Survey D1, D2"
+    },
+    {
+      "id": "split",
+      "type": "and",
+      "name": "at the same time",
+      "col": 7,
+      "row": 0
+    },
+    {
+      "id": "lic",
+      "type": "subprocess",
+      "name": "Licenses & permits",
+      "col": 8,
+      "row": 0,
+      "who": "board · locality",
+      "cite": "Survey B3, E3, E4"
+    },
+    {
+      "id": "tax",
+      "type": "subprocess",
+      "name": "Taxes & records",
+      "col": 8,
+      "row": 1,
+      "who": "IRS · Va. Tax",
+      "cite": "Survey F3, F4"
+    },
+    {
+      "id": "money",
+      "type": "subprocess",
+      "name": "Start-up money",
+      "col": 8,
+      "row": 2,
+      "who": "CDFI · SBA · family",
+      "cite": "Survey F1, F2"
+    },
+    {
+      "id": "join",
+      "type": "and",
+      "name": "all done",
+      "col": 9,
+      "row": 0
+    },
+    {
+      "id": "g_ben",
+      "type": "xor",
+      "name": "Getting SNAP, SSI or Medicaid?",
+      "col": 10,
+      "row": 0,
+      "cite": "Survey F5"
+    },
+    {
+      "id": "ben",
+      "type": "user",
+      "name": "Benefits counseling before income starts",
+      "col": 11,
+      "row": 1,
+      "who": "benefits counselor",
+      "cite": "?"
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "name": "Open for business",
+      "col": 12,
+      "row": 0
+    }
+  ],
+  "flows": [
+    {
+      "from": "s",
+      "to": "survey"
+    },
+    {
+      "from": "survey",
+      "to": "g_sup"
+    },
+    {
+      "from": "g_sup",
+      "to": "po",
+      "name": "yes"
+    },
+    {
+      "from": "g_sup",
+      "to": "id",
+      "name": "no"
+    },
+    {
+      "from": "po",
+      "to": "id",
+      "via": [
+        [
+          3.5,
+          1
+        ],
+        [
+          3.5,
+          0
+        ]
+      ],
+      "join": true
+    },
+    {
+      "from": "id",
+      "to": "entity"
+    },
+    {
+      "from": "entity",
+      "to": "bank"
+    },
+    {
+      "from": "bank",
+      "to": "split"
+    },
+    {
+      "from": "split",
+      "to": "lic"
+    },
+    {
+      "from": "split",
+      "to": "tax"
+    },
+    {
+      "from": "split",
+      "to": "money"
+    },
+    {
+      "from": "lic",
+      "to": "join"
+    },
+    {
+      "from": "tax",
+      "to": "join"
+    },
+    {
+      "from": "money",
+      "to": "join"
+    },
+    {
+      "from": "join",
+      "to": "g_ben"
+    },
+    {
+      "from": "g_ben",
+      "to": "ben",
+      "name": "yes"
+    },
+    {
+      "from": "g_ben",
+      "to": "end",
+      "name": "no"
+    },
+    {
+      "from": "ben",
+      "to": "end",
+      "via": [
+        [
+          11.5,
+          1
+        ],
+        [
+          11.5,
+          0
+        ]
+      ],
+      "join": true
+    }
+  ]
+}

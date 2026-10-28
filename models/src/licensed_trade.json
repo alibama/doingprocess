@@ -1,0 +1,255 @@
+{
+  "id": "licensed_trade",
+  "name": "Getting licensed in a regulated trade",
+  "summary": "Barbering, cosmetology, contracting, HVAC and many other trades need a state license. This is the path through the board, including the record screen most states now apply, and what happens while you wait.",
+  "col_width": 178,
+  "row_height": 104,
+  "lanes": [
+    {
+      "name": "Entrepreneur",
+      "rows": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "name": "Licensing board",
+      "rows": [
+        3
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "s",
+      "type": "start",
+      "name": "A trade in mind",
+      "col": 0,
+      "row": 0
+    },
+    {
+      "id": "lookup",
+      "type": "rule",
+      "name": "Look up: does this trade need a state license?",
+      "col": 1,
+      "row": 0,
+      "cite": "DMN license_required"
+    },
+    {
+      "id": "g1",
+      "type": "xor",
+      "name": "License required?",
+      "col": 2,
+      "row": 0,
+      "cite": "Survey B3, E2"
+    },
+    {
+      "id": "nolic",
+      "type": "end",
+      "name": "No state license. Go set up the business.",
+      "col": 3,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "rule",
+      "name": "Screen your record against the board's rules",
+      "col": 3,
+      "row": 0,
+      "cite": "Va. Code § 54.1-204"
+    },
+    {
+      "id": "g2",
+      "type": "xor",
+      "name": "Possible barrier?",
+      "col": 4,
+      "row": 0,
+      "cite": "Survey E3, E4"
+    },
+    {
+      "id": "predet",
+      "type": "user",
+      "name": "Ask the board for an early determination (where offered)",
+      "col": 5,
+      "row": 1,
+      "cite": "?"
+    },
+    {
+      "id": "board_pre",
+      "type": "service",
+      "name": "Weigh the record: relation to the trade, time passed, rehabilitation",
+      "col": 6,
+      "row": 3,
+      "cite": "Va. Code § 54.1-204(B)"
+    },
+    {
+      "id": "train",
+      "type": "user",
+      "name": "Finish the training hours and pass the exam",
+      "col": 7,
+      "row": 0,
+      "inside": true,
+      "cite": "?"
+    },
+    {
+      "id": "apply",
+      "type": "user",
+      "name": "Apply and pay the fee",
+      "col": 8,
+      "row": 0,
+      "cite": "?"
+    },
+    {
+      "id": "wait",
+      "type": "event",
+      "name": "Wait for the board",
+      "col": 9,
+      "row": 0
+    },
+    {
+      "id": "got",
+      "type": "message",
+      "name": "License issued",
+      "col": 10,
+      "row": 0
+    },
+    {
+      "id": "denied",
+      "type": "message",
+      "name": "Denied",
+      "col": 10,
+      "row": 1
+    },
+    {
+      "id": "late",
+      "type": "timer",
+      "name": "No answer after 30 days",
+      "col": 10,
+      "row": 2,
+      "duration": "P30D"
+    },
+    {
+      "id": "appeal",
+      "type": "user",
+      "name": "Ask for the reasons in writing; request a hearing",
+      "col": 11,
+      "row": 1,
+      "cite": "Va. Code § 2.2-4019"
+    },
+    {
+      "id": "followup",
+      "type": "user",
+      "name": "Follow up with the board",
+      "col": 11,
+      "row": 2
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "name": "Licensed",
+      "col": 12,
+      "row": 0
+    },
+    {
+      "id": "end2",
+      "type": "end",
+      "name": "Hearing outcome",
+      "col": 12,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "from": "s",
+      "to": "lookup"
+    },
+    {
+      "from": "lookup",
+      "to": "g1"
+    },
+    {
+      "from": "g1",
+      "to": "nolic",
+      "name": "no"
+    },
+    {
+      "from": "g1",
+      "to": "screen",
+      "name": "yes"
+    },
+    {
+      "from": "screen",
+      "to": "g2"
+    },
+    {
+      "from": "g2",
+      "to": "predet",
+      "name": "yes"
+    },
+    {
+      "from": "g2",
+      "to": "train",
+      "name": "no"
+    },
+    {
+      "from": "predet",
+      "to": "board_pre"
+    },
+    {
+      "from": "board_pre",
+      "to": "train",
+      "via": [
+        [
+          6.5,
+          3
+        ],
+        [
+          6.5,
+          0
+        ]
+      ],
+      "join": true
+    },
+    {
+      "from": "train",
+      "to": "apply"
+    },
+    {
+      "from": "apply",
+      "to": "wait"
+    },
+    {
+      "from": "wait",
+      "to": "got"
+    },
+    {
+      "from": "wait",
+      "to": "denied"
+    },
+    {
+      "from": "wait",
+      "to": "late"
+    },
+    {
+      "from": "got",
+      "to": "end"
+    },
+    {
+      "from": "denied",
+      "to": "appeal"
+    },
+    {
+      "from": "late",
+      "to": "followup"
+    },
+    {
+      "from": "followup",
+      "to": "wait"
+    },
+    {
+      "from": "appeal",
+      "to": "end2"
+    }
+  ]
+}

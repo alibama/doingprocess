@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_obtain_id" targetNamespace="https://doingprocess.org/bpmn" exporter="doingprocess build_diagrams.py" exporterVersion="1">
+  <bpmn:collaboration id="Collab_obtain_id">
+    <bpmn:participant id="Participant_obtain_id" name="Getting an ID (and a driver's license back)" processRef="Process_obtain_id" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_obtain_id" name="Getting an ID (and a driver's license back)" isExecutable="false">
+    <bpmn:documentation>Nearly every later step needs ID, and the three documents depend on each other. Five offices are involved; facility staff can break the loop before release. Virginia is the worked example.</bpmn:documentation>
+    <bpmn:laneSet id="LaneSet_obtain_id">
+      <bpmn:lane id="Lane_obtain_id_0" name="Returning citizen">
+        <bpmn:flowNodeRef>s</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>g_bc</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>g_ss</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>g_id</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>g_dl</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>reinstate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>end</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_obtain_id_1" name="Facility reentry staff">
+        <bpmn:flowNodeRef>staff_bc</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>staff_ss</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_obtain_id_2" name="Vital records">
+        <bpmn:flowNodeRef>vr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>vr_t</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_obtain_id_3" name="Social Security">
+        <bpmn:flowNodeRef>ssa</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_obtain_id_4" name="DMV">
+        <bpmn:flowNodeRef>dmvc</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>dmv_issue</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>dmv_t</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>dmv_re</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="s" name="Need ID for the next step">
+      <bpmn:outgoing>Flow_0</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="g_bc" name="Have your birth certificate?">
+      <bpmn:documentation>Authority: Survey C1</bpmn:documentation>
+      <bpmn:incoming>Flow_0</bpmn:incoming>
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:textAnnotation id="n_loop"><bpmn:text>The catch: a birth-certificate request usually asks for photo ID, and a photo ID needs a birth certificate. Staff can break the loop.</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_n_loop" sourceRef="g_bc" targetRef="n_loop" />
+    <bpmn:userTask id="staff_bc" name="Verify identity on the request form">
+      <bpmn:documentation>Authority: CITATION NEEDED; Can start before release: yes</bpmn:documentation>
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="vr" name="Mail a certified copy ($12)">
+      <bpmn:documentation>Authority: Va. Code § 32.1-272</bpmn:documentation>
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="vr_t" name="weeks by mail" attachedToRef="vr" cancelActivity="false">
+      <bpmn:timerEventDefinition id="TimerDef_vr_t"><bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P8W</bpmn:timeDuration></bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:exclusiveGateway id="g_ss" name="Have your Social Security card?">
+      <bpmn:documentation>Authority: Survey C1, C2</bpmn:documentation>
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="staff_ss" name="Pre-release card request through the facility">
+      <bpmn:documentation>Authority: CITATION NEEDED; Can start before release: yes</bpmn:documentation>
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="ssa" name="Issue a replacement card">
+      <bpmn:documentation>Authority: 20 CFR 422.103</bpmn:documentation>
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="g_id" name="Valid state ID or license?">
+      <bpmn:documentation>Authority: Survey C1</bpmn:documentation>
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="dmvc" name="Apply at a DMV Connect visit or a DMV office">
+      <bpmn:documentation>Authority: Va. Code § 46.2-345; Can start before release: yes</bpmn:documentation>
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:textAnnotation id="n_dmv"><bpmn:text>Needs proof of identity, legal presence, your SSN and two proofs of Virginia address. A sponsor&#x27;s or shelter letter can count.</bpmn:text></bpmn:textAnnotation>
+    <bpmn:association id="Assoc_n_dmv" sourceRef="g_id" targetRef="n_dmv" />
+    <bpmn:serviceTask id="dmv_issue" name="Issue the ID card">
+      <bpmn:documentation>Authority: Va. Code § 46.2-345</bpmn:documentation>
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="dmv_t" name="arrives by mail" attachedToRef="dmv_issue" cancelActivity="false">
+      <bpmn:timerEventDefinition id="TimerDef_dmv_t"><bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P15D</bpmn:timeDuration></bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:exclusiveGateway id="g_dl" name="License suspended or revoked?">
+      <bpmn:documentation>Authority: Survey C3</bpmn:documentation>
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="reinstate" name="Meet the reinstatement terms and pay the fee">
+      <bpmn:documentation>Authority: Va. Code § 46.2-411</bpmn:documentation>
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="dmv_re" name="Reinstate the license">
+      <bpmn:documentation>Authority: Va. Code § 46.2-411</bpmn:documentation>
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+      <bpmn:outgoing>Flow_16</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="end" name="ID in hand">
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:incoming>Flow_16</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0" sourceRef="s" targetRef="g_bc" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="g_bc" targetRef="staff_bc" name="no" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="g_bc" targetRef="g_ss" name="yes" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="staff_bc" targetRef="vr" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="vr" targetRef="g_ss" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="g_ss" targetRef="staff_ss" name="no" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="g_ss" targetRef="g_id" name="yes" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="staff_ss" targetRef="ssa" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="ssa" targetRef="g_id" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="g_id" targetRef="dmvc" name="no" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="g_id" targetRef="g_dl" name="yes" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="dmvc" targetRef="dmv_issue" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="dmv_issue" targetRef="g_dl" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="g_dl" targetRef="reinstate" name="yes" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="g_dl" targetRef="end" name="no" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="reinstate" targetRef="dmv_re" />
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="dmv_re" targetRef="end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_obtain_id">
+    <bpmndi:BPMNPlane id="Plane_obtain_id" bpmnElement="Collab_obtain_id">
+      <bpmndi:BPMNShape id="Participant_obtain_id_di" bpmnElement="Participant_obtain_id" isHorizontal="true"><dc:Bounds x="26" y="38" width="2532" height="636" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_obtain_id_0_di" bpmnElement="Lane_obtain_id_0" isHorizontal="true"><dc:Bounds x="56" y="44" width="2502" height="208" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_obtain_id_1_di" bpmnElement="Lane_obtain_id_1" isHorizontal="true"><dc:Bounds x="56" y="252" width="2502" height="104" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_obtain_id_2_di" bpmnElement="Lane_obtain_id_2" isHorizontal="true"><dc:Bounds x="56" y="356" width="2502" height="104" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_obtain_id_3_di" bpmnElement="Lane_obtain_id_3" isHorizontal="true"><dc:Bounds x="56" y="460" width="2502" height="104" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_obtain_id_4_di" bpmnElement="Lane_obtain_id_4" isHorizontal="true"><dc:Bounds x="56" y="564" width="2502" height="104" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="s_di" bpmnElement="s"><dc:Bounds x="136" y="77" width="38" height="38" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g_bc_di" bpmnElement="g_bc"><dc:Bounds x="309" y="72" width="48" height="48" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n_loop_di" bpmnElement="n_loop"><dc:Bounds x="411" y="165" width="200" height="70" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_n_loop_di" bpmnElement="Assoc_n_loop"><di:waypoint x="357" y="96" /><di:waypoint x="411" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="staff_bc_di" bpmnElement="staff_bc"><dc:Bounds x="437" y="267" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="vr_di" bpmnElement="vr"><dc:Bounds x="615" y="371" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="vr_t_di" bpmnElement="vr_t"><dc:Bounds x="731" y="357" width="28" height="28" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g_ss_di" bpmnElement="g_ss"><dc:Bounds x="843" y="72" width="48" height="48" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="staff_ss_di" bpmnElement="staff_ss"><dc:Bounds x="971" y="267" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ssa_di" bpmnElement="ssa"><dc:Bounds x="1149" y="475" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g_id_di" bpmnElement="g_id"><dc:Bounds x="1377" y="72" width="48" height="48" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="dmvc_di" bpmnElement="dmvc"><dc:Bounds x="1505" y="579" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n_dmv_di" bpmnElement="n_dmv"><dc:Bounds x="1479" y="165" width="200" height="70" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_n_dmv_di" bpmnElement="Assoc_n_dmv"><di:waypoint x="1425" y="96" /><di:waypoint x="1479" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="dmv_issue_di" bpmnElement="dmv_issue"><dc:Bounds x="1683" y="579" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="dmv_t_di" bpmnElement="dmv_t"><dc:Bounds x="1799" y="565" width="28" height="28" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g_dl_di" bpmnElement="g_dl"><dc:Bounds x="1911" y="72" width="48" height="48" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="reinstate_di" bpmnElement="reinstate"><dc:Bounds x="2039" y="163" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="dmv_re_di" bpmnElement="dmv_re"><dc:Bounds x="2217" y="579" width="148" height="74" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_di" bpmnElement="end"><dc:Bounds x="2450" y="77" width="38" height="38" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0_di" bpmnElement="Flow_0"><di:waypoint x="174" y="96" /><di:waypoint x="309" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="333" y="120" /><di:waypoint x="333" y="304" /><di:waypoint x="437" y="304" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="357" y="96" /><di:waypoint x="843" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="585" y="304" /><di:waypoint x="600" y="304" /><di:waypoint x="600" y="408" /><di:waypoint x="615" y="408" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4"><di:waypoint x="763" y="408" /><di:waypoint x="867" y="408" /><di:waypoint x="867" y="120" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5"><di:waypoint x="867" y="120" /><di:waypoint x="867" y="304" /><di:waypoint x="971" y="304" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6"><di:waypoint x="891" y="96" /><di:waypoint x="1377" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7"><di:waypoint x="1119" y="304" /><di:waypoint x="1134" y="304" /><di:waypoint x="1134" y="512" /><di:waypoint x="1149" y="512" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8"><di:waypoint x="1297" y="512" /><di:waypoint x="1401" y="512" /><di:waypoint x="1401" y="120" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9"><di:waypoint x="1401" y="120" /><di:waypoint x="1401" y="616" /><di:waypoint x="1505" y="616" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10"><di:waypoint x="1425" y="96" /><di:waypoint x="1911" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11"><di:waypoint x="1653" y="616" /><di:waypoint x="1683" y="616" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12"><di:waypoint x="1831" y="616" /><di:waypoint x="1935" y="616" /><di:waypoint x="1935" y="120" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13"><di:waypoint x="1935" y="120" /><di:waypoint x="1935" y="200" /><di:waypoint x="2039" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14"><di:waypoint x="1959" y="96" /><di:waypoint x="2450" y="96" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15"><di:waypoint x="2187" y="200" /><di:waypoint x="2202" y="200" /><di:waypoint x="2202" y="616" /><di:waypoint x="2217" y="616" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16_di" bpmnElement="Flow_16"><di:waypoint x="2365" y="616" /><di:waypoint x="2380" y="616" /><di:waypoint x="2380" y="96" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

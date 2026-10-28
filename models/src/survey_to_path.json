@@ -1,0 +1,153 @@
+{
+  "id": "survey_to_path",
+  "name": "From survey answers to a personal path",
+  "summary": "Each tagged survey answer becomes a process variable. A decision table reads them and opens, skips or shortens the steps that follow, so nobody is walked through a step that does not apply to them.",
+  "col_width": 190,
+  "row_height": 104,
+  "nodes": [
+    {
+      "id": "s",
+      "type": "start",
+      "name": "Survey handed in",
+      "col": 0,
+      "row": 0
+    },
+    {
+      "id": "fill",
+      "type": "user",
+      "name": "Enter the answers (paper), or the tablet writes them",
+      "col": 1,
+      "row": 0,
+      "inside": true,
+      "cite": "Crosswalk codes A1–H3"
+    },
+    {
+      "id": "vars",
+      "type": "script",
+      "name": "Write the process variables",
+      "col": 2,
+      "row": 0,
+      "cite": "months_to_release, business_type …"
+    },
+    {
+      "id": "n_priv",
+      "type": "note",
+      "for": "vars",
+      "col": 2,
+      "row": 1,
+      "w": 190,
+      "h": 56,
+      "text": "No name or DOC number travels with the answers. The case holds variables, not the form."
+    },
+    {
+      "id": "decide",
+      "type": "rule",
+      "name": "Pick the path (decision table)",
+      "col": 3,
+      "row": 0,
+      "cite": "Survey B1, B6"
+    },
+    {
+      "id": "g",
+      "type": "xor",
+      "name": "Which path?",
+      "col": 4,
+      "row": 0
+    },
+    {
+      "id": "full",
+      "type": "subprocess",
+      "name": "Full start-up path",
+      "col": 5,
+      "row": 0
+    },
+    {
+      "id": "job",
+      "type": "subprocess",
+      "name": "Job first, business later",
+      "col": 5,
+      "row": 1
+    },
+    {
+      "id": "learn",
+      "type": "subprocess",
+      "name": "Learning track only",
+      "col": 5,
+      "row": 2
+    },
+    {
+      "id": "end",
+      "type": "end",
+      "name": "Personal path ready",
+      "col": 6,
+      "row": 0
+    }
+  ],
+  "flows": [
+    {
+      "from": "s",
+      "to": "fill"
+    },
+    {
+      "from": "fill",
+      "to": "vars"
+    },
+    {
+      "from": "vars",
+      "to": "decide"
+    },
+    {
+      "from": "decide",
+      "to": "g"
+    },
+    {
+      "from": "g",
+      "to": "full",
+      "name": "start soon"
+    },
+    {
+      "from": "g",
+      "to": "job",
+      "name": "after a job"
+    },
+    {
+      "from": "g",
+      "to": "learn",
+      "name": "not now"
+    },
+    {
+      "from": "full",
+      "to": "end"
+    },
+    {
+      "from": "job",
+      "to": "end",
+      "via": [
+        [
+          5.5,
+          1
+        ],
+        [
+          5.5,
+          0
+        ]
+      ],
+      "join": true
+    },
+    {
+      "from": "learn",
+      "to": "end",
+      "via": [
+        [
+          5.5,
+          2
+        ],
+        [
+          5.5,
+          0
+        ]
+      ],
+      "join": true
+    }
+  ]
+}
