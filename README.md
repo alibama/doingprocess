@@ -34,37 +34,25 @@ your own hardware, so material from contributors never depends on a third party.
 
 ## Update the website
 
-```bash
-./update.sh "What changed"      # rebuild diagrams → commit → push → Pages redeploys
-./update.sh --preview           # look at it first on http://localhost:8000
-```
-
-That is the whole workflow. Edit the HTML in `site/`, the maps in `models/src/*.json`,
-or the stylesheet in `site/assets/site.css`, then run the script. It finds a Python 3
-on its own (including the Windows install) and falls back to committing the existing
-SVGs if none is available. The GitHub Actions workflow in `.github/workflows/pages.yml`
-also rebuilds the diagrams on the server, so editing a JSON spec in the GitHub web UI
-is enough to redeploy.
-
-**On the server** (Ubuntu + Apache, where doingprocess.org lives), the same script runs in
-pull mode. One-time setup:
+Apache on the server points at `/var/www/doingprocess/site`, so deploying is a pull:
 
 ```bash
-cd /var/www && git clone https://github.com/alibama/doingprocess.git
-cd doingprocess
-echo 'DOCROOT=/var/www/doingprocess.org/public_html' > .deploy   # your vhost's DocumentRoot
-./update.sh --deploy
+cd /var/www/doingprocess && bash update.sh      # on the server: pull the latest
 ```
 
-After that, `./update.sh --deploy` pulls, rebuilds the diagrams and copies `site/` into the
-web root. A cron line makes it automatic, so pushing from a laptop is the whole workflow:
+From your own machine, after editing the HTML in `site/`, the maps in `models/src/*.json`
+or the stylesheet in `site/assets/site.css`:
 
-```
-*/5 * * * * cd /var/www/doingprocess && ./update.sh --deploy --quiet
+```bash
+bash update.sh --push "What changed"           # rebuild diagrams, commit, push
+bash update.sh --preview                       # look at it first on http://localhost:8000
 ```
 
-GitHub Pages is optional: `.github/workflows/pages.yml` runs only when started by hand from
-the Actions tab, and needs *Settings → Pages → Source = GitHub Actions* first.
+The script finds a Python 3 on its own (including the Windows install) and skips the
+diagram rebuild if none is available. Anything the site later needs at deploy time belongs
+in the `pull` step of `update.sh`, so the server command stays the same. GitHub Pages is an
+optional mirror: `.github/workflows/pages.yml` runs only when started by hand from the
+Actions tab, and needs *Settings → Pages → Source = GitHub Actions* first.
 
 ## Do local processing (quickstart)
 
