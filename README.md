@@ -46,13 +46,25 @@ SVGs if none is available. The GitHub Actions workflow in `.github/workflows/pag
 also rebuilds the diagrams on the server, so editing a JSON spec in the GitHub web UI
 is enough to redeploy.
 
-**First deploy:** push once, then check *Settings → Pages* shows "GitHub Actions" as the
-source (the workflow tries to enable it itself). The site appears at
-`https://alibama.github.io/doingprocess/`. To serve it at `doingprocess.org` instead,
-add a `CNAME` record at your DNS host pointing to `alibama.github.io`, put the domain in
-*Settings → Pages → Custom domain*, and commit a `site/CNAME` file containing
-`doingprocess.org`. Until then the Apache host keeps serving; set
-`DOINGPROCESS_RSYNC_TARGET=user@host:/path/` and `update.sh` will mirror `site/` there too.
+**On the server** (Ubuntu + Apache, where doingprocess.org lives), the same script runs in
+pull mode. One-time setup:
+
+```bash
+cd /var/www && git clone https://github.com/alibama/doingprocess.git
+cd doingprocess
+echo 'DOCROOT=/var/www/doingprocess.org/public_html' > .deploy   # your vhost's DocumentRoot
+./update.sh --deploy
+```
+
+After that, `./update.sh --deploy` pulls, rebuilds the diagrams and copies `site/` into the
+web root. A cron line makes it automatic, so pushing from a laptop is the whole workflow:
+
+```
+*/5 * * * * cd /var/www/doingprocess && ./update.sh --deploy --quiet
+```
+
+GitHub Pages is optional: `.github/workflows/pages.yml` runs only when started by hand from
+the Actions tab, and needs *Settings → Pages → Source = GitHub Actions* first.
 
 ## Do local processing (quickstart)
 

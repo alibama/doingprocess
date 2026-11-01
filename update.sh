@@ -6,6 +6,8 @@
 #   ./update.sh --preview             serve site/ at http://localhost:8000 (no commit)
 #   ./update.sh --build               rebuild diagrams only (no commit)
 #   ./update.sh --no-push "message"   commit but do not push
+#   ./update.sh --deploy              ON THE SERVER: git pull, rebuild, copy site/ into the
+#                                     web root named in ./.deploy (DOCROOT=/var/www/...)
 #
 # Works in Git Bash on Windows, macOS and Linux. Needs git and any Python 3.9+.
 set -euo pipefail
@@ -39,6 +41,27 @@ build() {
 }
 
 case "${1:-}" in
+  --deploy)
+    # Server side. Settings live in ./.deploy (not committed), e.g.
+    #   DOCROOT=/var/www/doingprocess.org/public_html
+    #   OWNER=www-data            # optional: chown the copied files
+    QUIET=0; [ "${2:-}" = "--quiet" ] && QUIET=1
+    [ -f .deploy ] && . ./.deploy
+    [ -n "${DOCROOT:-}" ] || die "No DOCROOT. Create ./.deploy with a line like  DOCROOT=/var/www/doingprocess.org/public_html"
+    before=$(git rev-parse HEAD)
+    git pull -q --ff-only origin "$(git rev-parse --abbrev-ref HEAD)"
+    after=$(git rev-parse HEAD)
+    if [ "$before" = "$after" ] && [ "$QUIET" = 1 ] && [ -f "$DOCROOT/index.html" ]; then exit 0; fi
+    build >/dev/null
+    mkdir -p "$DOCROOT"
+    if command -v rsync >/dev/null 2>&1; then
+      rsync -a --delete --exclude '.nojekyll' site/ "$DOCROOT"/
+    else
+      cp -a site/. "$DOCROOT"/
+    fi
+    [ -n "${OWNER:-}" ] && chown -R "$OWNER" "$DOCROOT" || true
+    [ "$QUIET" = 1 ] || say "Deployed $(git log -1 --format='%h %s') to $DOCROOT"
+    exit 0 ;;
   --preview)
     build
     PY=$(find_python) || die "Python is needed to serve the preview."

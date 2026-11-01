@@ -1,13 +1,12 @@
 name: Deploy site to GitHub Pages
 
+# The live site is served from the project's own Apache host (see update.sh --deploy).
+# This workflow is an optional mirror on GitHub Pages. It runs only when started by hand
+# from the Actions tab, and needs Settings → Pages → Source = "GitHub Actions" first.
+# To deploy on every push instead, add under `on:`:
+#   push:
+#     branches: [main]
 on:
-  push:
-    branches: [main]
-    paths:
-      - "site/**"
-      - "models/**"
-      - "tools/build_diagrams.py"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
